@@ -1,0 +1,235 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdministrativeOrder {
+  idAdministrative Int        @id @default(autoincrement())
+  orderTitle       OrderTitle @relation(fields: [orderTitleId], references: [idOrderTitle])
+  orderTitleId     Int
+  orderNumber      Int
+  orderDescription String     @db.Text
+  orderYear        String     @db.VarChar(220)
+  orderLevel       Int
+  student          Student    @relation(fields: [studentId], references: [idStudent])
+  studentId        Int
+  orderDate        DateTime
+  user             User       @relation(fields: [createdBy], references: [idUser])
+  createdBy        Int
+  createdAt        DateTime   @default(now())
+}
+
+model OrderTitle {
+  idOrderTitle         Int                   @id @default(autoincrement())
+  title                String                @db.VarChar(220)
+  createdAt            DateTime              @default(now())
+  user                 User                  @relation(fields: [createdBy], references: [idUser])
+  createdBy            Int
+  administrativeOrders AdministrativeOrder[]
+}
+
+model ExitCauses {
+  idExitCauses    Int      @id @default(autoincrement())
+  exitCausesTitle String   @db.VarChar(220)
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [createdBy], references: [idUser])
+  createdBy       Int
+}
+
+model PassType {
+  idPassType Int      @id @default(autoincrement())
+  passName   String   @db.VarChar(220)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [createdBy], references: [idUser])
+  createdBy  Int
+}
+
+model User {
+  idUser               Int                   @id @default(autoincrement())
+  userName             String                @db.VarChar(220)
+  password             String                @db.VarChar(220)
+  role                 Role                  @relation(fields: [roleId], references: [idRole])
+  roleId               Int
+  section              Section               @relation(fields: [sectionId], references: [idSection])
+  sectionId            Int
+  createdAt            DateTime              @default(now())
+  passTypes            PassType[]
+  administrativeOrders AdministrativeOrder[]
+  OrderTitles          OrderTitle[]
+  ExitCauses           ExitCauses[]
+}
+
+model Role {
+  idRole    Int      @id @default(autoincrement())
+  roleName  String   @db.VarChar(220)
+  createdAt DateTime @default(now())
+  users     User[]
+}
+
+model Section {
+  idSection   Int       @id @default(autoincrement())
+  sectionName String    @db.VarChar(220)
+  code        String    @db.VarChar(220)
+  englishName String    @db.VarChar(220)
+  students    Student[]
+  User        User[]
+}
+
+model Student {
+  idStudent              Int                      @id @default(autoincrement())
+  studentName            String                   @db.VarChar(220)
+  englishName            String                   @db.VarChar(220)
+  mail                   String                   @unique @db.VarChar(220)
+  password               String                   @db.VarChar(220)
+  dob                    String                   @db.VarChar(220)
+  section                Section                  @relation(fields: [sectionId], references: [idSection])
+  sectionId              Int
+  nationality            String                   @db.VarChar(220)
+  phone                  String                   @db.VarChar(220)
+  gender                 Boolean
+  studyType              Boolean
+  relationships          Boolean
+  note                   String                   @db.Text
+  religion               String                   @db.VarChar(220)
+  motherName             String                   @db.VarChar(220)
+  collegeNumber          String                   @db.VarChar(220)
+  enterYear              String                   @db.VarChar(220)
+  studentStatus          StudentStatus            @relation(fields: [studentStatusId], references: [idStudentStatus])
+  studentStatusId        Int
+  acceptedType           AcceptedType             @relation(fields: [acceptedTypeId], references: [idAcceptedType])
+  acceptedTypeId         Int
+  address                Address                  @relation(fields: [addressId], references: [idAddress])
+  addressId              Int
+  administrativeOrders   AdministrativeOrder[]
+  studentSchool          StudentSchool?
+  studentLevel           StudentLevel?
+  studentGraduation      StudentGraduation?
+  nationalInfo           NationalInfo?
+  studentResponsables    StudentResponsible[]
+  NationalityCertificate NationalityCertificate[]
+  StudentImage           StudentImage[]
+}
+
+model StudentResponsible {
+  idStudentResponsible Int     @id @default(autoincrement())
+  responsibleName      String  @db.VarChar(220)
+  responsiblePhone     String  @db.VarChar(220)
+  student              Student @relation(fields: [studentId], references: [idStudent])
+  studentId            Int
+}
+
+model NationalityCertificate {
+  idNationalityCertificate Int     @id @default(autoincrement())
+  nationalityNumber        String  @db.VarChar(220)
+  nationalityIssue         String  @db.VarChar(220)
+  nationalityPlace         String  @db.VarChar(220)
+  student                  Student @relation(fields: [studentId], references: [idStudent])
+  studentId                Int
+}
+
+model NationalInfo {
+  idNationalInfo Int     @id @default(autoincrement())
+  nationalNumber String  @db.VarChar(220)
+  issueNumber    String  @db.VarChar(220)
+  issuePlace     String  @db.VarChar(220)
+  student        Student @relation(fields: [studentId], references: [idStudent])
+  studentId      Int
+}
+
+model StudentGraduation {
+  idStudentGraduation Int     @id @default(autoincrement())
+  graduationDate      String  @db.VarChar(220)
+  student             Student @relation(fields: [studentId], references: [idStudent])
+  studentId           Int
+}
+
+model StudentLevel {
+  idStudentLevel Int     @id @default(autoincrement())
+  level          Int
+  class          String  @db.VarChar(220)
+  year           String  @db.VarChar(220)
+  student        Student @relation(fields: [studentId], references: [idStudent])
+  studentId      Int
+
+}
+
+model StudentSchool {
+  idStudentSchool     Int               @id @default(autoincrement())
+  schoolName          String            @db.VarChar(220)
+  graduationDate      String            @db.VarChar(220)
+  documentDate        String            @db.VarChar(220)
+  totalMarks          Int
+  average             Float
+  documentNumber      Int
+  lessonCount         Int
+  Directorate         String            @db.VarChar(220)
+  studySubCategory    StudySubCategory  @relation(fields: [studySubCategoryId], references: [idStudySubCategory])
+  studySubCategoryId  Int
+  student             Student           @relation(fields: [studentId], references: [idStudent])
+  studentId           Int
+  certificateStatus   CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
+  certificateStatusId Int
+  createdAt           DateTime          @default(now())
+}
+
+model StudyCategory {
+  idStudyCategory  Int                @id @default(autoincrement())
+  categoryName     String             @db.VarChar(220)
+  StudySubCategory StudySubCategory[]
+}
+
+model StudySubCategory {
+  idStudySubCategory Int             @id @default(autoincrement())
+  subCategoryName    String          @db.VarChar(220)
+  studyCategory      StudyCategory   @relation(fields: [studyCategoryId], references: [idStudyCategory])
+  studyCategoryId    Int
+  StudentSchool      StudentSchool[]
+}
+
+model CertificateStatus {
+  idCertificateStatus          Int            @id @default(autoincrement())
+  certificateStatusName        String         @db.VarChar(220)
+  certificateStatusDescription String         @db.VarChar(220)
+  studentSchool                StudentSchool?
+}
+
+model StudentStatus {
+  idStudentStatus Int       @id @default(autoincrement())
+  statusName      String    @db.VarChar(220)
+  students        Student[]
+}
+
+model AcceptedType {
+  idAcceptedType Int       @id @default(autoincrement())
+  acceptedName   String    @db.VarChar(220)
+  students       Student[]
+}
+
+model StudentImage {
+  idStudentImage Int     @id @default(autoincrement())
+  imagePath      String  @db.VarChar(220)
+  student        Student @relation(fields: [studentId], references: [idStudent])
+  studentId      Int
+}
+
+model Province {
+  idProvince     Int       @id @default(autoincrement())
+  provinceName   String    @db.VarChar(220)
+  provinceNameEn String    @db.VarChar(220)
+  addresses      Address[]
+}
+
+model Address {
+  idAddress    Int      @id @default(autoincrement())
+  province     Province @relation(fields: [provinceId], references: [idProvince])
+  provinceId   Int
+  district     String   @db.VarChar(220)
+  avenue       String   @db.VarChar(220)
+  houseNumber  String   @db.VarChar(220)
+  streetNumber String   @db.VarChar(220)
+  student      Student?
+}
