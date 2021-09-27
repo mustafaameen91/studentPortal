@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
+const fs = require("fs");
 
 app.use(cors());
 app.use(express.json());
