@@ -15,7 +15,7 @@ exports.create = (req, res) => {
       average: req.body.average * 1,
       documentNumber: req.body.documentNumber * 1,
       documentDate: req.body.documentDate,
-      lessonCount: req.body.lessonCount,
+      lessonCount: req.body.lessonCount * 1,
       Directorate: req.body.Directorate,
       studySubCategoryId: req.body.studySubCategoryId,
       studentId: req.body.studentId,
