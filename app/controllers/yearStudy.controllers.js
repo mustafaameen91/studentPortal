@@ -1,4 +1,4 @@
-const Address = require("../models/address.models.js");
+const YearStudy = require("../models/yearStudy.models.js");
 
 exports.create = (req, res) => {
    if (!req.body) {
@@ -7,16 +7,12 @@ exports.create = (req, res) => {
       });
    }
 
-   const address = new Address({
-      provinceId: req.body.provinceId,
-      district: req.body.district,
-      avenue: req.body.avenue,
-      houseNumber: req.body.houseNumber,
-      streetNumber: req.body.streetNumber,
-      studentId: req.body.studentId,
+   const yearStudy = new YearStudy({
+      year: req.body.year,
+      currentYear: req.body.currentYear,
    });
 
-   Address.create(address, (err, data) => {
+   YearStudy.create(yearStudy, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
@@ -25,14 +21,14 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-   Address.getAll((err, data) => {
+   YearStudy.getAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
 };
 
 exports.findOne = (req, res) => {
-   Address.findById(req.params.id, (err, data) => {
+   YearStudy.findById(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
@@ -45,22 +41,22 @@ exports.update = (req, res) => {
       });
    }
 
-   Address.updateById(req.params.id, new Address(req.body), (err, data) => {
+   YearStudy.updateById(req.params.id, new YearStudy(req.body), (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
 };
 
 exports.delete = (req, res) => {
-   Address.remove(req.params.id, (err, data) => {
+   YearStudy.remove(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
-      else res.send({ message: `Address was deleted successfully!` });
+      else res.send({ message: `Year Study was deleted successfully!` });
    });
 };
 
 exports.deleteAll = (req, res) => {
-   Address.removeAll((err, data) => {
+   YearStudy.removeAll((err, data) => {
       if (err) res.status(err.code).send(err);
-      else res.send({ message: `All Addresses were deleted successfully!` });
+      else res.send({ message: `All Years Study were deleted successfully!` });
    });
 };

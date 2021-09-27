@@ -85,6 +85,7 @@ require("./app/routes/address.routes.js")(app);
 require("./app/routes/section.routes.js")(app);
 require("./app/routes/studentImage.routes.js")(app);
 require("./app/routes/certificateStatus.routes.js")(app);
+require("./app/routes/yearStudy.routes.js")(app);
 
 app.listen(3100, () => {
    console.log("app listening on port 3100");

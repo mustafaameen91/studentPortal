@@ -10,8 +10,8 @@ exports.create = (req, res) => {
    const student = new Student({
       studentName: req.body.studentName,
       englishName: req.body.englishName,
-      mail: req.body.mail,
       password: req.body.password,
+      mail: req.body.mail,
       dob: req.body.dob,
       sectionId: req.body.sectionId,
       nationality: req.body.nationality,
@@ -23,10 +23,9 @@ exports.create = (req, res) => {
       religion: req.body.religion,
       motherName: req.body.motherName,
       collegeNumber: req.body.collegeNumber,
-      enterYear: req.body.enterYear,
+      registerYearId: req.body.registerYearId,
       studentStatusId: req.body.studentStatusId,
       acceptedTypeId: req.body.acceptedTypeId,
-      addressId: req.body.addressId,
    });
 
    Student.create(student, (err, data) => {

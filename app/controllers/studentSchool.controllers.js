@@ -8,13 +8,13 @@ exports.create = (req, res) => {
    }
 
    const studentSchool = new StudentSchool({
-      schoolNumber: req.body.schoolNumber,
       schoolName: req.body.schoolName,
       graduationDate: req.body.graduationDate,
       documentDate: req.body.documentDate,
-      totalMarks: req.body.totalMarks,
-      average: req.body.average,
-      documentNumber: req.body.documentNumber,
+      totalMarks: req.body.totalMarks * 1,
+      average: req.body.average * 1,
+      documentNumber: req.body.documentNumber * 1,
+      documentDate: req.body.documentDate,
       lessonCount: req.body.lessonCount,
       Directorate: req.body.Directorate,
       studySubCategoryId: req.body.studySubCategoryId,

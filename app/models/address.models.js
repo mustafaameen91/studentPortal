@@ -9,6 +9,7 @@ const Address = function (address) {
    this.avenue = address.avenue;
    this.houseNumber = address.houseNumber;
    this.streetNumber = address.streetNumber;
+   this.studentId = address.studentId;
 };
 
 Address.create = async (newAddress, result) => {

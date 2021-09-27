@@ -6,6 +6,7 @@ const {
 const Student = function (student) {
    this.studentName = student.studentName;
    this.englishName = student.englishName;
+   this.password = student.password;
    this.mail = student.mail;
    this.dob = student.dob;
    this.sectionId = student.sectionId;
@@ -14,13 +15,13 @@ const Student = function (student) {
    this.gender = student.gender;
    this.relationships = student.relationships;
    this.note = student.note;
+   this.studyType = student.studyType;
    this.religion = student.religion;
    this.motherName = student.motherName;
    this.collegeNumber = student.collegeNumber;
-   this.enterYear = student.enterYear;
+   this.registerYearId = student.registerYearId;
    this.studentStatusId = student.studentStatusId;
    this.acceptedTypeId = student.acceptedTypeId;
-   this.addressId = student.addressId;
 };
 
 Student.create = async (newStudent, result) => {
@@ -61,7 +62,16 @@ Student.findById = async (studentId, result) => {
 
 Student.getAll = async (result) => {
    try {
-      const students = await prismaInstance.student.findMany();
+      const students = await prismaInstance.student.findMany({
+         include: {
+            section: true,
+            studentSchool: true,
+            studentLevel: true,
+            studentGraduation: true,
+            StudentImage: true,
+            Address: true,
+         },
+      });
       result(null, students);
    } catch (err) {
       console.log(prismaErrorHandling(err));

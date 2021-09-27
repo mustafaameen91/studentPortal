@@ -97,13 +97,12 @@ model Student {
   religion               String                   @db.VarChar(220)
   motherName             String                   @db.VarChar(220)
   collegeNumber          String                   @db.VarChar(220)
-  enterYear              String                   @db.VarChar(220)
+  yearStudy              YearStudy                @relation(fields: [registerYearId], references: [idYearStudy])
+  registerYearId         Int
   studentStatus          StudentStatus            @relation(fields: [studentStatusId], references: [idStudentStatus])
   studentStatusId        Int
   acceptedType           AcceptedType             @relation(fields: [acceptedTypeId], references: [idAcceptedType])
   acceptedTypeId         Int
-  address                Address                  @relation(fields: [addressId], references: [idAddress])
-  addressId              Int
   administrativeOrders   AdministrativeOrder[]
   studentSchool          StudentSchool?
   studentLevel           StudentLevel?
@@ -112,6 +111,15 @@ model Student {
   studentResponsables    StudentResponsible[]
   NationalityCertificate NationalityCertificate[]
   StudentImage           StudentImage[]
+  Address                Address?
+}
+
+model YearStudy {
+  idYearStudy  Int            @id @default(autoincrement())
+  year         String         @db.VarChar(220)
+  currentYear  Boolean
+  StudentLevel StudentLevel[]
+  Student      Student[]
 }
 
 model StudentResponsible {
@@ -148,11 +156,12 @@ model StudentGraduation {
 }
 
 model StudentLevel {
-  idStudentLevel Int     @id @default(autoincrement())
+  idStudentLevel Int       @id @default(autoincrement())
   level          Int
-  class          String  @db.VarChar(220)
-  year           String  @db.VarChar(220)
-  student        Student @relation(fields: [studentId], references: [idStudent])
+  class          String    @db.VarChar(220)
+  yearStudy      YearStudy @relation(fields: [yearStudyId], references: [idYearStudy])
+  yearStudyId    Int
+  student        Student   @relation(fields: [studentId], references: [idStudent])
   studentId      Int
 
 }
@@ -231,5 +240,6 @@ model Address {
   avenue       String   @db.VarChar(220)
   houseNumber  String   @db.VarChar(220)
   streetNumber String   @db.VarChar(220)
-  student      Student?
+  student      Student  @relation(fields: [studentId], references: [idStudent])
+  studentId    Int
 }

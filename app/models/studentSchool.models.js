@@ -4,7 +4,6 @@ const {
 } = require("./../middleware/handleError.middleware.js");
 
 const StudentSchool = function (studentSchool) {
-   this.schoolNumber = studentSchool.schoolNumber;
    this.schoolName = studentSchool.schoolName;
    this.graduationDate = studentSchool.graduationDate;
    this.totalMarks = studentSchool.totalMarks;
@@ -12,6 +11,7 @@ const StudentSchool = function (studentSchool) {
    this.documentNumber = studentSchool.documentNumber;
    this.lessonCount = studentSchool.lessonCount;
    this.Directorate = studentSchool.Directorate;
+   this.documentDate = studentSchool.documentDate;
    this.studySubCategoryId = studentSchool.studySubCategoryId;
    this.studentId = studentSchool.studentId;
    this.certificateStatusId = studentSchool.certificateStatusId;

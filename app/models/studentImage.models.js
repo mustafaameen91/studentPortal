@@ -21,6 +21,19 @@ StudentImage.create = async (newStudentImage, result) => {
    }
 };
 
+StudentImage.createMany = async (newStudentImages, result) => {
+   try {
+      const studentImages = await prismaInstance.studentImage.createMany({
+         data: newStudentImages,
+      });
+
+      result(null, studentImages);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 StudentImage.findById = async (studentImageId, result) => {
    try {
       const singleStudentImage = await prismaInstance.studentImage.findUnique({
