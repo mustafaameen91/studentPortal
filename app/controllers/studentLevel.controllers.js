@@ -10,7 +10,7 @@ exports.create = (req, res) => {
    const studentLevel = new StudentLevel({
       level: req.body.level,
       class: req.body.class,
-      year: req.body.year,
+      yearStudyId: req.body.yearStudyId,
       studentId: req.body.studentId,
    });
 

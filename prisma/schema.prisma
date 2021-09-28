@@ -163,7 +163,6 @@ model StudentLevel {
   yearStudyId    Int
   student        Student   @relation(fields: [studentId], references: [idStudent])
   studentId      Int
-
 }
 
 model StudentSchool {

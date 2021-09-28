@@ -6,7 +6,7 @@ const {
 const StudentLevel = function (studentLevel) {
    this.level = studentLevel.level;
    this.class = studentLevel.class;
-   this.year = studentLevel.year;
+   this.yearStudyId = studentLevel.yearStudyId;
    this.studentId = studentLevel.studentId;
 };
 

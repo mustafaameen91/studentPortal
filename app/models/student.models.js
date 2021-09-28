@@ -64,12 +64,18 @@ Student.getAll = async (result) => {
    try {
       const students = await prismaInstance.student.findMany({
          include: {
+            yearStudy: true,
             section: true,
             studentSchool: true,
             studentLevel: true,
             studentGraduation: true,
             StudentImage: true,
-            Address: true,
+            studentStatus: true,
+            Address: {
+               include: {
+                  province: true,
+               },
+            },
          },
       });
       result(null, students);
