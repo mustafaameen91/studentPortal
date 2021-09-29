@@ -9,7 +9,6 @@ exports.create = (req, res) => {
 
    const certificateStatus = new CertificateStatus({
       certificateStatusName: req.body.certificateStatusName,
-      certificateStatusDescription: req.body.certificateStatusDescription,
    });
 
    CertificateStatus.create(certificateStatus, (err, data) => {

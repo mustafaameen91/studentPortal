@@ -5,8 +5,6 @@ const {
 
 const CertificateStatus = function (certificateStatus) {
    this.certificateStatusName = certificateStatus.certificateStatusName;
-   this.certificateStatusDescription =
-      certificateStatus.certificateStatusDescription;
 };
 
 CertificateStatus.create = async (newCertificateStatus, result) => {
