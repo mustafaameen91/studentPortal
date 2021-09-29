@@ -3,6 +3,8 @@ module.exports = (app) => {
 
    app.post("/api/addAdministrativeOrder", administrativeOrder.create);
 
+   app.post("/api/addAdministrativeOrders", administrativeOrder.createMany);
+
    app.get("/api/administrativeOrders", administrativeOrder.findAll);
 
    app.get("/api/administrativeOrder/:id", administrativeOrder.findOne);

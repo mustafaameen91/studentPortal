@@ -28,6 +28,23 @@ AdministrativeOrder.create = async (newAdministrativeOrder, result) => {
    }
 };
 
+AdministrativeOrder.createManyOrders = async (
+   newAdministrativeOrders,
+   result
+) => {
+   try {
+      const administrativeOrder =
+         await prismaInstance.administrativeOrder.createMany({
+            data: newAdministrativeOrders,
+         });
+
+      result(null, administrativeOrder);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 AdministrativeOrder.findById = async (administrativeId, result) => {
    try {
       const singleAdministrativeOrder =
@@ -55,7 +72,12 @@ AdministrativeOrder.findById = async (administrativeId, result) => {
 AdministrativeOrder.getAll = async (result) => {
    try {
       const administrativeOrders =
-         await prismaInstance.administrativeOrder.findMany();
+         await prismaInstance.administrativeOrder.findMany({
+            include: {
+               orderTitle: true,
+               student: true,
+            },
+         });
       result(null, administrativeOrders);
    } catch (err) {
       console.log(prismaErrorHandling(err));

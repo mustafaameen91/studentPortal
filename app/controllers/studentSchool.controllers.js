@@ -20,6 +20,7 @@ exports.create = (req, res) => {
       studySubCategoryId: req.body.studySubCategoryId,
       studentId: req.body.studentId,
       certificateStatusId: req.body.certificateStatusId,
+      certificateStatusDescription: req.body.certificateStatusDescription,
    });
 
    StudentSchool.create(studentSchool, (err, data) => {

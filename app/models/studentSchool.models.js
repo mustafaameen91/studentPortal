@@ -15,6 +15,8 @@ const StudentSchool = function (studentSchool) {
    this.studySubCategoryId = studentSchool.studySubCategoryId;
    this.studentId = studentSchool.studentId;
    this.certificateStatusId = studentSchool.certificateStatusId;
+   this.certificateStatusDescription =
+      studentSchool.certificateStatusDescription;
 };
 
 StudentSchool.create = async (newStudentSchool, result) => {

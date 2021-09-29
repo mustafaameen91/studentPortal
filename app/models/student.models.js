@@ -60,6 +60,49 @@ Student.findById = async (studentId, result) => {
    }
 };
 
+Student.getBySearch = async (conditions, result) => {
+   let studentLevel = {};
+   if (conditions.studentLevel) {
+      console.log(conditions.studentLevel);
+      studentLevel.level = conditions.studentLevel;
+      delete conditions.studentLevel;
+   }
+   try {
+      const students = await prismaInstance.student.findMany({
+         where: {
+            ...conditions,
+         },
+         include: {
+            yearStudy: true,
+            section: true,
+            studentSchool: true,
+            studentLevel: {
+               where: {
+                  ...studentLevel,
+               },
+            },
+            studentGraduation: true,
+            StudentImage: true,
+            studentStatus: true,
+            acceptedType: true,
+            Address: {
+               include: {
+                  province: true,
+               },
+            },
+         },
+      });
+
+      let filteredStudent = students.filter((student) => {
+         return student.studentLevel.length > 0;
+      });
+      result(null, filteredStudent);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 Student.getAll = async (result) => {
    try {
       const students = await prismaInstance.student.findMany({

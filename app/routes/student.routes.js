@@ -5,6 +5,8 @@ module.exports = (app) => {
 
    app.get("/api/students", student.findAll);
 
+   app.get("/api/getStudents", student.findBySearch);
+
    app.get("/api/student/:id", student.findOne);
 
    app.put("/api/student/:id", student.update);

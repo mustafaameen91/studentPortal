@@ -105,7 +105,7 @@ model Student {
   acceptedTypeId         Int
   administrativeOrders   AdministrativeOrder[]
   studentSchool          StudentSchool?
-  studentLevel           StudentLevel?
+  studentLevel           StudentLevel[]
   studentGraduation      StudentGraduation?
   nationalInfo           NationalInfo?
   studentResponsables    StudentResponsible[]
@@ -166,22 +166,23 @@ model StudentLevel {
 }
 
 model StudentSchool {
-  idStudentSchool     Int               @id @default(autoincrement())
-  schoolName          String            @db.VarChar(220)
-  graduationDate      String            @db.VarChar(220)
-  documentDate        String            @db.VarChar(220)
-  totalMarks          Int
-  average             Float
-  documentNumber      Int
-  lessonCount         Int
-  Directorate         String            @db.VarChar(220)
-  studySubCategory    StudySubCategory  @relation(fields: [studySubCategoryId], references: [idStudySubCategory])
-  studySubCategoryId  Int
-  student             Student           @relation(fields: [studentId], references: [idStudent])
-  studentId           Int
-  certificateStatus   CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
-  certificateStatusId Int
-  createdAt           DateTime          @default(now())
+  idStudentSchool              Int               @id @default(autoincrement())
+  schoolName                   String            @db.VarChar(220)
+  graduationDate               String            @db.VarChar(220)
+  documentDate                 String            @db.VarChar(220)
+  totalMarks                   Int
+  average                      Float
+  documentNumber               Int
+  lessonCount                  Int
+  Directorate                  String            @db.VarChar(220)
+  studySubCategory             StudySubCategory  @relation(fields: [studySubCategoryId], references: [idStudySubCategory])
+  studySubCategoryId           Int
+  student                      Student           @relation(fields: [studentId], references: [idStudent])
+  studentId                    Int
+  certificateStatus            CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
+  certificateStatusId          Int
+  certificateStatusDescription String            @db.VarChar(220)
+  createdAt                    DateTime          @default(now())
 }
 
 model StudyCategory {
@@ -199,10 +200,9 @@ model StudySubCategory {
 }
 
 model CertificateStatus {
-  idCertificateStatus          Int            @id @default(autoincrement())
-  certificateStatusName        String         @db.VarChar(220)
-  certificateStatusDescription String         @db.VarChar(220)
-  studentSchool                StudentSchool?
+  idCertificateStatus   Int             @id @default(autoincrement())
+  certificateStatusName String          @db.VarChar(220)
+  studentSchool         StudentSchool[]
 }
 
 model StudentStatus {

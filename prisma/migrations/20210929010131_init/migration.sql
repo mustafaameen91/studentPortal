@@ -93,14 +93,21 @@ CREATE TABLE `Student` (
     `religion` VARCHAR(220) NOT NULL,
     `motherName` VARCHAR(220) NOT NULL,
     `collegeNumber` VARCHAR(220) NOT NULL,
-    `enterYear` VARCHAR(220) NOT NULL,
+    `registerYearId` INTEGER NOT NULL,
     `studentStatusId` INTEGER NOT NULL,
     `acceptedTypeId` INTEGER NOT NULL,
-    `addressId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Student_mail_key`(`mail`),
-    UNIQUE INDEX `Student_addressId_unique`(`addressId`),
     PRIMARY KEY (`idStudent`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `YearStudy` (
+    `idYearStudy` INTEGER NOT NULL AUTO_INCREMENT,
+    `year` VARCHAR(220) NOT NULL,
+    `currentYear` BOOLEAN NOT NULL,
+
+    PRIMARY KEY (`idYearStudy`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -151,17 +158,15 @@ CREATE TABLE `StudentLevel` (
     `idStudentLevel` INTEGER NOT NULL AUTO_INCREMENT,
     `level` INTEGER NOT NULL,
     `class` VARCHAR(220) NOT NULL,
-    `year` VARCHAR(220) NOT NULL,
+    `yearStudyId` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `StudentLevel_studentId_unique`(`studentId`),
     PRIMARY KEY (`idStudentLevel`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `StudentSchool` (
     `idStudentSchool` INTEGER NOT NULL AUTO_INCREMENT,
-    `schoolNumber` VARCHAR(220) NOT NULL,
     `schoolName` VARCHAR(220) NOT NULL,
     `graduationDate` VARCHAR(220) NOT NULL,
     `documentDate` VARCHAR(220) NOT NULL,
@@ -176,7 +181,6 @@ CREATE TABLE `StudentSchool` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `StudentSchool_studentId_unique`(`studentId`),
-    UNIQUE INDEX `StudentSchool_certificateStatusId_unique`(`certificateStatusId`),
     PRIMARY KEY (`idStudentSchool`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -223,6 +227,15 @@ CREATE TABLE `AcceptedType` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `StudentImage` (
+    `idStudentImage` INTEGER NOT NULL AUTO_INCREMENT,
+    `imagePath` VARCHAR(220) NOT NULL,
+    `studentId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`idStudentImage`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Province` (
     `idProvince` INTEGER NOT NULL AUTO_INCREMENT,
     `provinceName` VARCHAR(220) NOT NULL,
@@ -239,7 +252,9 @@ CREATE TABLE `Address` (
     `avenue` VARCHAR(220) NOT NULL,
     `houseNumber` VARCHAR(220) NOT NULL,
     `streetNumber` VARCHAR(220) NOT NULL,
+    `studentId` INTEGER NOT NULL,
 
+    UNIQUE INDEX `Address_studentId_unique`(`studentId`),
     PRIMARY KEY (`idAddress`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -271,13 +286,13 @@ ALTER TABLE `User` ADD CONSTRAINT `User_sectionId_fkey` FOREIGN KEY (`sectionId`
 ALTER TABLE `Student` ADD CONSTRAINT `Student_sectionId_fkey` FOREIGN KEY (`sectionId`) REFERENCES `Section`(`idSection`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Student` ADD CONSTRAINT `Student_registerYearId_fkey` FOREIGN KEY (`registerYearId`) REFERENCES `YearStudy`(`idYearStudy`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Student` ADD CONSTRAINT `Student_studentStatusId_fkey` FOREIGN KEY (`studentStatusId`) REFERENCES `StudentStatus`(`idStudentStatus`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Student` ADD CONSTRAINT `Student_acceptedTypeId_fkey` FOREIGN KEY (`acceptedTypeId`) REFERENCES `AcceptedType`(`idAcceptedType`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Student` ADD CONSTRAINT `Student_addressId_fkey` FOREIGN KEY (`addressId`) REFERENCES `Address`(`idAddress`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `StudentResponsible` ADD CONSTRAINT `StudentResponsible_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Student`(`idStudent`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -290,6 +305,9 @@ ALTER TABLE `NationalInfo` ADD CONSTRAINT `NationalInfo_studentId_fkey` FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE `StudentGraduation` ADD CONSTRAINT `StudentGraduation_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Student`(`idStudent`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `StudentLevel` ADD CONSTRAINT `StudentLevel_yearStudyId_fkey` FOREIGN KEY (`yearStudyId`) REFERENCES `YearStudy`(`idYearStudy`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `StudentLevel` ADD CONSTRAINT `StudentLevel_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Student`(`idStudent`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -307,4 +325,10 @@ ALTER TABLE `StudentSchool` ADD CONSTRAINT `StudentSchool_certificateStatusId_fk
 ALTER TABLE `StudySubCategory` ADD CONSTRAINT `StudySubCategory_studyCategoryId_fkey` FOREIGN KEY (`studyCategoryId`) REFERENCES `StudyCategory`(`idStudyCategory`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `StudentImage` ADD CONSTRAINT `StudentImage_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Student`(`idStudent`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Address` ADD CONSTRAINT `Address_provinceId_fkey` FOREIGN KEY (`provinceId`) REFERENCES `Province`(`idProvince`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Address` ADD CONSTRAINT `Address_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `Student`(`idStudent`) ON DELETE RESTRICT ON UPDATE CASCADE;
