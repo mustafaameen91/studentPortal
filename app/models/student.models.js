@@ -102,10 +102,10 @@ Student.getBySearch = async (conditions, result) => {
                },
             },
             studentGraduation: true,
-            StudentImage: true,
+            studentImage: true,
             studentStatus: true,
             acceptedType: true,
-            Address: {
+            address: {
                include: {
                   province: {
                      select: {
