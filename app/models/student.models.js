@@ -43,6 +43,25 @@ Student.findById = async (studentId, result) => {
          where: {
             idStudent: JSON.parse(studentId),
          },
+         include: {
+            yearStudy: true,
+            section: true,
+            studentSchool: true,
+            studentLevel: true,
+            studentGraduation: true,
+            studentImage: true,
+            studentStatus: true,
+            acceptedType: true,
+            address: {
+               include: {
+                  province: {
+                     select: {
+                        provinceName: true,
+                     },
+                  },
+               },
+            },
+         },
       });
 
       if (singleStudent) {
@@ -62,11 +81,12 @@ Student.findById = async (studentId, result) => {
 
 Student.getBySearch = async (conditions, result) => {
    let studentLevel = {};
+   console.log(conditions);
    if (conditions.studentLevel) {
-      console.log(conditions.studentLevel);
       studentLevel.level = conditions.studentLevel;
       delete conditions.studentLevel;
    }
+
    try {
       const students = await prismaInstance.student.findMany({
          where: {
@@ -87,12 +107,16 @@ Student.getBySearch = async (conditions, result) => {
             acceptedType: true,
             Address: {
                include: {
-                  province: true,
+                  province: {
+                     select: {
+                        provinceName: true,
+                     },
+                  },
                },
             },
          },
       });
-
+      console.log(students);
       let filteredStudent = students.filter((student) => {
          return student.studentLevel.length > 0;
       });
@@ -112,11 +136,16 @@ Student.getAll = async (result) => {
             studentSchool: true,
             studentLevel: true,
             studentGraduation: true,
-            StudentImage: true,
+            studentImage: true,
             studentStatus: true,
-            Address: {
+            acceptedType: true,
+            address: {
                include: {
-                  province: true,
+                  province: {
+                     select: {
+                        provinceName: true,
+                     },
+                  },
                },
             },
          },

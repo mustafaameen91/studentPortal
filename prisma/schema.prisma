@@ -109,9 +109,9 @@ model Student {
   studentGraduation      StudentGraduation?
   nationalInfo           NationalInfo?
   studentResponsables    StudentResponsible[]
-  NationalityCertificate NationalityCertificate[]
-  StudentImage           StudentImage[]
-  Address                Address?
+  nationalityCertificate NationalityCertificate[]
+  studentImage           StudentImage[]
+  address                Address?
 }
 
 model YearStudy {
