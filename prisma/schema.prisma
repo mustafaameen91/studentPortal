@@ -41,11 +41,12 @@ model ExitCauses {
 }
 
 model PassType {
-  idPassType Int      @id @default(autoincrement())
-  passName   String   @db.VarChar(220)
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [createdBy], references: [idUser])
-  createdBy  Int
+  idPassType    Int             @id @default(autoincrement())
+  passName      String          @db.VarChar(220)
+  createdAt     DateTime        @default(now())
+  user          User            @relation(fields: [createdBy], references: [idUser])
+  createdBy     Int
+  StudentSchool StudentSchool[]
 }
 
 model User {
@@ -181,6 +182,8 @@ model StudentSchool {
   studentId                    Int
   certificateStatus            CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
   certificateStatusId          Int
+  passType                     PassType          @relation(fields: [passTypeId], references: [idPassType])
+  passTypeId                   Int
   certificateStatusDescription String            @db.VarChar(220)
   createdAt                    DateTime          @default(now())
 }

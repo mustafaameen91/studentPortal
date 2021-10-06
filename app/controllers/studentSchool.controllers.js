@@ -21,6 +21,7 @@ exports.create = (req, res) => {
       studentId: req.body.studentId,
       certificateStatusId: req.body.certificateStatusId,
       certificateStatusDescription: req.body.certificateStatusDescription,
+      passTypeId: req.body.passTypeId * 1,
    });
 
    StudentSchool.create(studentSchool, (err, data) => {

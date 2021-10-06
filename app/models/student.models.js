@@ -81,7 +81,6 @@ Student.findById = async (studentId, result) => {
 
 Student.getBySearch = async (conditions, result) => {
    let studentLevel = {};
-   console.log(conditions);
    if (conditions.studentLevel) {
       studentLevel.level = conditions.studentLevel;
       delete conditions.studentLevel;
@@ -93,6 +92,62 @@ Student.getBySearch = async (conditions, result) => {
             ...conditions,
          },
          include: {
+            yearStudy: true,
+            section: true,
+            studentSchool: {
+               include: {
+                  studySubCategory: {
+                     include: {
+                        studyCategory: true,
+                     },
+                  },
+               },
+            },
+            studentLevel: {
+               where: {
+                  ...studentLevel,
+               },
+            },
+            studentGraduation: true,
+            studentImage: true,
+            studentStatus: true,
+            acceptedType: true,
+            address: {
+               include: {
+                  province: {
+                     select: {
+                        provinceName: true,
+                     },
+                  },
+               },
+            },
+         },
+      });
+
+      let filteredStudent = students.filter((student) => {
+         return student.studentLevel.length > 0;
+      });
+      result(null, filteredStudent);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
+Student.getStudentsCount = async (conditions, result) => {
+   let studentLevel = {};
+   if (conditions.studentLevel) {
+      studentLevel.level = conditions.studentLevel;
+      delete conditions.studentLevel;
+   }
+
+   try {
+      const students = await prismaInstance.student.findMany({
+         where: {
+            ...conditions,
+         },
+         include: {
+            _count: true,
             yearStudy: true,
             section: true,
             studentSchool: true,
@@ -116,11 +171,11 @@ Student.getBySearch = async (conditions, result) => {
             },
          },
       });
-      console.log(students);
+
       let filteredStudent = students.filter((student) => {
          return student.studentLevel.length > 0;
       });
-      result(null, filteredStudent);
+      result(null, { count: filteredStudent.length });
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);

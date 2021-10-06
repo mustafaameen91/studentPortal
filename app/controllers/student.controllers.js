@@ -68,6 +68,38 @@ exports.findBySearch = (req, res) => {
    });
 };
 
+exports.findStudentsCount = (req, res) => {
+   let filtered = {};
+
+   if (req.query.sectionId) {
+      filtered.sectionId = req.query.sectionId * 1;
+   }
+   if (req.query.registerYearId) {
+      filtered.registerYearId = req.query.registerYearId * 1;
+   }
+
+   if (req.query.studentStatusId) {
+      filtered.studentStatusId = req.query.studentStatusId * 1;
+   }
+
+   if (req.query.acceptedTypeId) {
+      filtered.acceptedTypeId = req.query.acceptedTypeId * 1;
+   }
+
+   if (req.query.studentLevel) {
+      filtered.studentLevel = req.query.studentLevel * 1;
+   }
+
+   if (req.query.studyType) {
+      filtered.studyType = req.query.studyType == 1 ? true : false;
+   }
+
+   Student.getStudentsCount(filtered, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
+};
+
 exports.findAll = (req, res) => {
    Student.getAll((err, data) => {
       if (err) res.status(err.code).send(err);
