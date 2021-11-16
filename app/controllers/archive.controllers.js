@@ -10,13 +10,13 @@ exports.create = (req, res) => {
    const archive = new Archive({
       from: req.body.from,
       to: req.body.to,
-      archiveDate: req.body.archiveDate,
-      archiveSubjectId: req.body.archiveSubjectId,
+      archiveDate: new Date(req.body.archiveDate),
+      archiveSubjectId: req.body.archiveSubjectId * 1,
       archiveNumber: req.body.archiveNumber,
       subjectDescription: req.body.subjectDescription,
       note: req.body.note,
-      sectionId: req.body.sectionId,
-      archiveTypeId: req.body.archiveTypeId,
+      sectionId: req.body.sectionId * 1,
+      archiveTypeId: req.body.archiveTypeId * 1,
    });
 
    Archive.create(archive, (err, data) => {
