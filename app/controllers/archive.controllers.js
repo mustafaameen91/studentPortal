@@ -42,7 +42,7 @@ exports.searchArchive = (req, res) => {
    }
 
    if (req.query.subjectSearch) {
-      search.archiveSubjectId = req.query.subjectSearch;
+      search.archiveSubjectId = req.query.subjectSearch * 1;
    }
 
    if (req.query.dates) {
