@@ -64,6 +64,49 @@ app.get("/api/studentImages/:file", function (request, response) {
    });
 });
 
+app.post("/uploadArchive", function (req, res) {
+   if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send("No files were uploaded.");
+   }
+
+   let uploadedFile = req.files.attachment;
+   let photoName = generateRandomName(5, 3);
+   var filename = uploadedFile.name;
+   var ext = filename.substr(filename.lastIndexOf(".") + 1);
+   let imagePath = `${__dirname}/app/archive/${photoName}.${ext}`;
+
+   uploadedFile.mv(imagePath, function (err) {
+      if (err) return res.status(500).send(err);
+
+      res.send({ imagePath: `archive/${photoName}.${ext}` });
+   });
+});
+
+app.get("/api/archive/:file", function (request, response) {
+   let file = request.params.file;
+   var extension = file.split(".").pop();
+   var tempFile = `./app/archive/${file}`;
+
+   fs.readFile(tempFile, function (err, data) {
+      switch (extension) {
+         case "jpg":
+            contentType = "image/jpg";
+            isImage = 1;
+            break;
+         case "png":
+            contentType = "image/png";
+            isImage = 1;
+            break;
+         case "jpeg":
+            contentType = "image/jpeg";
+            isImage = 1;
+            break;
+      }
+      response.contentType(contentType);
+      response.send(data);
+   });
+});
+
 require("./app/routes/administrativeOrder.routes.js")(app);
 require("./app/routes/orderTitle.routes.js")(app);
 require("./app/routes/exitCauses.routes.js")(app);
@@ -87,6 +130,8 @@ require("./app/routes/section.routes.js")(app);
 require("./app/routes/studentImage.routes.js")(app);
 require("./app/routes/certificateStatus.routes.js")(app);
 require("./app/routes/yearStudy.routes.js")(app);
+require("./app/routes/archive.routes.js")(app);
+require("./app/routes/archiveSubject.routes.js")(app);
 
 app.listen(3100, () => {
    console.log("app listening on port 3100");

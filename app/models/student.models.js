@@ -188,7 +188,11 @@ Student.getAll = async (result) => {
          include: {
             yearStudy: true,
             section: true,
-            studentSchool: true,
+            studentSchool: {
+               include: {
+                  studySubCategory: true,
+               },
+            },
             studentLevel: true,
             studentGraduation: true,
             studentImage: true,

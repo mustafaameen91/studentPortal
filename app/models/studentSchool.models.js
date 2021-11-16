@@ -18,6 +18,7 @@ const StudentSchool = function (studentSchool) {
    this.certificateStatusDescription =
       studentSchool.certificateStatusDescription;
    this.passTypeId = studentSchool.passTypeId;
+   this.imageTypeId = studentSchool.imageTypeId;
 };
 
 StudentSchool.create = async (newStudentSchool, result) => {

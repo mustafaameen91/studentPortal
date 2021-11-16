@@ -8,19 +8,20 @@ generator client {
 }
 
 model AdministrativeOrder {
-  idAdministrative Int        @id @default(autoincrement())
-  orderTitle       OrderTitle @relation(fields: [orderTitleId], references: [idOrderTitle])
-  orderTitleId     Int
-  orderNumber      Int
-  orderDescription String     @db.Text
-  orderYear        String     @db.VarChar(220)
-  orderLevel       Int
-  student          Student    @relation(fields: [studentId], references: [idStudent])
-  studentId        Int
-  orderDate        DateTime
-  user             User       @relation(fields: [createdBy], references: [idUser])
-  createdBy        Int
-  createdAt        DateTime   @default(now())
+  idAdministrative  Int                 @id @default(autoincrement())
+  orderTitle        OrderTitle          @relation(fields: [orderTitleId], references: [idOrderTitle])
+  orderTitleId      Int
+  orderNumber       Int
+  orderDescription  String              @db.Text
+  orderYear         String              @db.VarChar(220)
+  orderLevel        Int
+  student           Student             @relation(fields: [studentId], references: [idStudent])
+  studentId         Int
+  orderDate         DateTime
+  user              User                @relation(fields: [createdBy], references: [idUser])
+  createdBy         Int
+  createdAt         DateTime            @default(now())
+  StudentExitCauses StudentExitCauses[]
 }
 
 model OrderTitle {
@@ -32,12 +33,21 @@ model OrderTitle {
   administrativeOrders AdministrativeOrder[]
 }
 
+model StudentExitCauses {
+  idStudentExitCauses    Int                 @id @default(autoincrement())
+  administrativeOrders   AdministrativeOrder @relation(fields: [administrativeOrdersId], references: [idAdministrative])
+  administrativeOrdersId Int
+  exitCauses             ExitCauses          @relation(fields: [exitCausesId], references: [idExitCauses])
+  exitCausesId           Int
+}
+
 model ExitCauses {
-  idExitCauses    Int      @id @default(autoincrement())
-  exitCausesTitle String   @db.VarChar(220)
-  createdAt       DateTime @default(now())
-  user            User     @relation(fields: [createdBy], references: [idUser])
-  createdBy       Int
+  idExitCauses      Int                 @id @default(autoincrement())
+  exitCausesTitle   String              @db.VarChar(220)
+  createdAt         DateTime            @default(now())
+  user              User                @relation(fields: [createdBy], references: [idUser])
+  createdBy         Int
+  StudentExitCauses StudentExitCauses[]
 }
 
 model PassType {
@@ -78,6 +88,7 @@ model Section {
   englishName String    @db.VarChar(220)
   students    Student[]
   User        User[]
+  Archive     Archive[]
 }
 
 model Student {
@@ -146,14 +157,14 @@ model NationalInfo {
   issueNumber    String  @db.VarChar(220)
   issuePlace     String  @db.VarChar(220)
   student        Student @relation(fields: [studentId], references: [idStudent])
-  studentId      Int
+  studentId      Int     @unique
 }
 
 model StudentGraduation {
   idStudentGraduation Int     @id @default(autoincrement())
   graduationDate      String  @db.VarChar(220)
   student             Student @relation(fields: [studentId], references: [idStudent])
-  studentId           Int
+  studentId           Int     @unique
 }
 
 model StudentLevel {
@@ -179,13 +190,21 @@ model StudentSchool {
   studySubCategory             StudySubCategory  @relation(fields: [studySubCategoryId], references: [idStudySubCategory])
   studySubCategoryId           Int
   student                      Student           @relation(fields: [studentId], references: [idStudent])
-  studentId                    Int
+  studentId                    Int               @unique
   certificateStatus            CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
   certificateStatusId          Int
   passType                     PassType          @relation(fields: [passTypeId], references: [idPassType])
-  passTypeId                   Int
+  passTypeId                   Int               @default(1)
+  imageType                    ImageType         @relation(fields: [imageTypeId], references: [idImageType])
+  imageTypeId                  Int               @default(1)
   certificateStatusDescription String            @db.VarChar(220)
   createdAt                    DateTime          @default(now())
+}
+
+model ImageType {
+  idImageType   Int             @id @default(autoincrement())
+  typeName      String          @db.VarChar(220)
+  StudentSchool StudentSchool[]
 }
 
 model StudyCategory {
@@ -243,5 +262,34 @@ model Address {
   houseNumber  String   @db.VarChar(220)
   streetNumber String   @db.VarChar(220)
   student      Student  @relation(fields: [studentId], references: [idStudent])
-  studentId    Int
+  studentId    Int      @unique
+}
+
+model Archive {
+  idArchive          Int            @id @default(autoincrement())
+  from               String         @db.VarChar(220)
+  to                 String         @db.VarChar(220)
+  archiveDate        DateTime
+  archiveSubject     ArchiveSubject @relation(fields: [archiveSubjectId], references: [idArchiveSubject])
+  archiveSubjectId   Int
+  archiveNumber      String         @db.VarChar(220)
+  subjectDescription String         @db.VarChar(220)
+  note               String         @db.VarChar(220)
+  section            Section        @relation(fields: [sectionId], references: [idSection])
+  sectionId          Int
+  ArchiveImage       ArchiveImage[]
+}
+
+model ArchiveSubject {
+  idArchiveSubject Int       @id @default(autoincrement())
+  subjectName      String    @db.VarChar(220)
+  createdAt        DateTime  @default(now())
+  Archive          Archive[]
+}
+
+model ArchiveImage {
+  idArchiveImage Int     @id @default(autoincrement())
+  imagePath      String  @db.VarChar(220)
+  archive        Archive @relation(fields: [archiveId], references: [idArchive])
+  archiveId      Int
 }
