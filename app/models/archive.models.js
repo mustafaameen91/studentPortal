@@ -12,6 +12,7 @@ const Archive = function (archive) {
    this.subjectDescription = archive.subjectDescription;
    this.note = archive.note;
    this.sectionId = archive.sectionId;
+   this.archiveTypeId = archive.archiveTypeId;
 };
 
 Archive.create = async (newArchive, result) => {
