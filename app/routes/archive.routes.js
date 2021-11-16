@@ -5,6 +5,8 @@ module.exports = (app) => {
 
    app.get("/api/archives", archive.findAll);
 
+   app.get("/api/searchArchive", archive.searchArchive);
+
    app.get("/api/archive/:id", archive.findOne);
 
    app.put("/api/archive/:id", archive.update);

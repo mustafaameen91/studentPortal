@@ -34,6 +34,37 @@ exports.findAll = (req, res) => {
    });
 };
 
+exports.searchArchive = (req, res) => {
+   let search = {};
+
+   if (req.query.numberSearch) {
+      search.archiveNumber = req.query.numberSearch;
+   }
+
+   if (req.query.subjectSearch) {
+      search.archiveSubjectId = req.query.subjectSearch;
+   }
+
+   if (req.query.dates) {
+      if (req.query.dates.length > 0) {
+         console.log(JSON.parse(req.query.dates));
+         let date = JSON.parse(req.query.dates);
+         var startDate = new Date(date[0]);
+         var endDate = new Date(date[1]);
+
+         filtered.createdAt = {
+            gte: startDate.toISOString(),
+            lte: endDate.toISOString(),
+         };
+      }
+   }
+
+   Archive.findBySearch(search, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
+};
+
 exports.findOne = (req, res) => {
    Archive.findById(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);

@@ -28,6 +28,29 @@ Archive.create = async (newArchive, result) => {
    }
 };
 
+Archive.findBySearch = async (search, result) => {
+   try {
+      const searchArchive = await prismaInstance.archive.findUnique({
+         where: {
+            ...search,
+         },
+      });
+
+      if (searchArchive) {
+         result(null, searchArchive);
+      } else {
+         result({
+            error: "Not Found",
+            code: 404,
+            errorMessage: "Not Found Archive with this Id",
+         });
+      }
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 Archive.findById = async (archiveId, result) => {
    try {
       const singleArchive = await prismaInstance.archive.findUnique({
