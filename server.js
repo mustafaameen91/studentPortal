@@ -134,6 +134,17 @@ require("./app/routes/archive.routes.js")(app);
 require("./app/routes/archiveSubject.routes.js")(app);
 require("./app/routes/archiveImage.routes.js")(app);
 
+const staticFileMiddleware = express.static(__dirname + "/dist");
+app.use(staticFileMiddleware);
+app.use(
+   history({
+      disableDotRule: true,
+      verbose: true,
+   })
+);
+
+app.use(staticFileMiddleware);
+
 app.listen(3100, () => {
    console.log("app listening on port 3100");
 });
