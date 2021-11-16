@@ -34,6 +34,9 @@ Archive.findBySearch = async (search, result) => {
          where: {
             ...search,
          },
+         include: {
+            archiveSubject: true,
+         },
       });
 
       if (searchArchive) {
