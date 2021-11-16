@@ -278,6 +278,8 @@ model Archive {
   section            Section        @relation(fields: [sectionId], references: [idSection])
   sectionId          Int
   createdAt          DateTime       @default(now())
+  archiveType        ArchiveType    @relation(fields: [archiveTypeId], references: [idArchiveType])
+  archiveTypeId      Int            @default(1)
   ArchiveImage       ArchiveImage[]
 }
 
@@ -286,6 +288,13 @@ model ArchiveSubject {
   subjectName      String    @db.VarChar(220)
   createdAt        DateTime  @default(now())
   Archive          Archive[]
+}
+
+model ArchiveType {
+  idArchiveType Int       @id @default(autoincrement())
+  typeName      String    @db.VarChar(220)
+  createdAt     DateTime  @default(now())
+  Archive       Archive[]
 }
 
 model ArchiveImage {

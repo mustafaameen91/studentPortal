@@ -55,6 +55,7 @@ Archive.getAll = async (result) => {
       const archives = await prismaInstance.archive.findMany({
          include: {
             archiveSubject: true,
+            archiveType: true,
          },
       });
       result(null, archives);
