@@ -132,6 +132,7 @@ require("./app/routes/certificateStatus.routes.js")(app);
 require("./app/routes/yearStudy.routes.js")(app);
 require("./app/routes/archive.routes.js")(app);
 require("./app/routes/archiveSubject.routes.js")(app);
+require("./app/routes/archiveImage.routes.js")(app);
 
 app.listen(3100, () => {
    console.log("app listening on port 3100");
