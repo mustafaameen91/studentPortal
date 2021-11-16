@@ -45,6 +45,10 @@ exports.searchArchive = (req, res) => {
       search.archiveSubjectId = req.query.subjectSearch * 1;
    }
 
+   if (req.query.archiveTypeId) {
+      search.archiveTypeId = req.query.archiveTypeId * 1;
+   }
+
    if (req.query.dates) {
       if (req.query.dates.length > 0) {
          console.log(JSON.parse(req.query.dates));
