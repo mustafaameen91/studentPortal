@@ -30,7 +30,7 @@ Archive.create = async (newArchive, result) => {
 
 Archive.findBySearch = async (search, result) => {
    try {
-      const searchArchive = await prismaInstance.archive.findUnique({
+      const searchArchive = await prismaInstance.archive.findMany({
          where: {
             ...search,
          },
