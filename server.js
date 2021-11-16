@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const fs = require("fs");
+const history = require("connect-history-api-fallback");
 
 app.use(cors());
 app.use(express.json());
