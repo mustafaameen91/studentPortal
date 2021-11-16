@@ -46,7 +46,7 @@ ArchiveSubject.findById = async (archiveSubjectId, result) => {
 ArchiveSubject.getAll = async (result) => {
    try {
       const archiveSubjects = await prismaInstance.archiveSubject.findMany();
-      result(null, archiveSubject);
+      result(null, archiveSubjects);
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
