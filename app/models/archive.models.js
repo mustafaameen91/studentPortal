@@ -52,7 +52,11 @@ Archive.findById = async (archiveId, result) => {
 
 Archive.getAll = async (result) => {
    try {
-      const archives = await prismaInstance.archive.findMany();
+      const archives = await prismaInstance.archive.findMany({
+         include: {
+            archiveSubject: true,
+         },
+      });
       result(null, archives);
    } catch (err) {
       console.log(prismaErrorHandling(err));

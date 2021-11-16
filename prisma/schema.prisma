@@ -277,6 +277,7 @@ model Archive {
   note               String         @db.VarChar(220)
   section            Section        @relation(fields: [sectionId], references: [idSection])
   sectionId          Int
+  createdAt          DateTime       @default(now())
   ArchiveImage       ArchiveImage[]
 }
 
