@@ -52,7 +52,7 @@ exports.searchArchive = (req, res) => {
          var startDate = new Date(date[0]);
          var endDate = new Date(date[1]);
 
-         filtered.createdAt = {
+         search.archiveDate = {
             gte: startDate.toISOString(),
             lte: endDate.toISOString(),
          };
