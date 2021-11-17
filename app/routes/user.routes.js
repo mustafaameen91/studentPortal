@@ -7,6 +7,8 @@ module.exports = (app) => {
 
    app.get("/api/user/:id", user.findOne);
 
+   app.post("/api/login", user.findByLogin);
+
    app.put("/api/user/:id", user.update);
 
    app.delete("/api/user/:id", user.delete);

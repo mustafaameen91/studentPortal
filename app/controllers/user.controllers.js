@@ -36,6 +36,13 @@ exports.findOne = (req, res) => {
    });
 };
 
+exports.findByLogin = (req, res) => {
+   User.login(req.body, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
+};
+
 exports.update = (req, res) => {
    if (!req.body) {
       res.status(400).send({
