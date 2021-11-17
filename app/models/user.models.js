@@ -30,6 +30,10 @@ User.login = async (user, result) => {
             userName: user.userName,
             password: user.password,
          },
+         include: {
+            section: true,
+            role: true,
+         },
       });
 
       if (singleUser) {
