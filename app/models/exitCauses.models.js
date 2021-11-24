@@ -4,13 +4,27 @@ const {
 } = require("./../middleware/handleError.middleware.js");
 
 const ExitCauses = function (exitCauses) {
-   this.title = exitCauses.title;
+   this.exitCausesTitle = exitCauses.exitCausesTitle;
+   this.studentId = exitCauses.studentId;
    this.createdBy = exitCauses.createdBy;
 };
 
 ExitCauses.create = async (newExitCauses, result) => {
    try {
       const exitCauses = await prismaInstance.exitCauses.create({
+         data: newExitCauses,
+      });
+
+      result(null, exitCauses);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
+ExitCauses.createMany = async (newExitCauses, result) => {
+   try {
+      const exitCauses = await prismaInstance.exitCauses.createMany({
          data: newExitCauses,
       });
 

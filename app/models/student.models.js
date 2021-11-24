@@ -6,30 +6,26 @@ const {
 const Student = function (student) {
    this.studentName = student.studentName;
    this.englishName = student.englishName;
-   this.password = student.password;
    this.mail = student.mail;
    this.dob = student.dob;
-   this.sectionId = student.sectionId;
+   this.sectionId = student.sectionId * 1;
    this.nationality = student.nationality;
-   this.phone = student.phone;
    this.gender = student.gender;
-   this.relationships = student.relationships;
    this.note = student.note;
    this.studyType = student.studyType;
-   this.religion = student.religion;
-   this.motherName = student.motherName;
    this.collegeNumber = student.collegeNumber;
-   this.registerYearId = student.registerYearId;
-   this.studentStatusId = student.studentStatusId;
-   this.acceptedTypeId = student.acceptedTypeId;
+   this.registerYearId = student.registerYearId * 1;
+   this.studentStatusId = student.studentStatusId * 1;
+   this.acceptedTypeId = student.acceptedTypeId * 1;
 };
 
 Student.create = async (newStudent, result) => {
+   console.log(newStudent);
    try {
       const student = await prismaInstance.student.create({
          data: newStudent,
       });
-
+      // console.log(student);
       result(null, student);
    } catch (err) {
       console.log(prismaErrorHandling(err));
@@ -45,13 +41,28 @@ Student.findById = async (studentId, result) => {
          },
          include: {
             yearStudy: true,
+            ExitCauses: true,
             section: true,
-            studentSchool: true,
-            studentLevel: true,
+            studentSchool: {
+               include: {
+                  yearStudy: true,
+               },
+            },
+            studentLevel: {
+               take: 1,
+               orderBy: {
+                  idStudentLevel: "desc",
+               },
+            },
+            studentResponsables: true,
             studentGraduation: true,
             studentImage: true,
             studentStatus: true,
+            administrativeOrders: true,
             acceptedType: true,
+            nationalInfo: true,
+            nationalityCertificate: true,
+            ExitCauses: true,
             address: {
                include: {
                   province: {
@@ -81,21 +92,49 @@ Student.findById = async (studentId, result) => {
 
 Student.getBySearch = async (conditions, result) => {
    let studentLevel = {};
+   let subCategoryId;
+   let studentGraduationId;
+
    if (conditions.studentLevel) {
+      console.log(conditions.studentLevel);
       studentLevel.level = conditions.studentLevel;
       delete conditions.studentLevel;
    }
+   if (conditions.subCategoryId) {
+      console.log(conditions.subCategoryId);
+      subCategoryId = conditions.subCategoryId;
+      delete conditions.subCategoryId;
+   }
+   delete conditions.subCategoryId;
 
+   if (conditions.studentGraduation) {
+      console.log(conditions.studentGraduation);
+      studentGraduationId = conditions.studentGraduation;
+      delete conditions.studentGraduation;
+   }
+   delete conditions.studentGraduation;
    try {
       const students = await prismaInstance.student.findMany({
          where: {
             ...conditions,
+            studentSchool: {
+               studySubCategoryId: subCategoryId,
+            },
+            studentGraduation: {
+               graduationDate: studentGraduationId,
+            },
          },
          include: {
+            ExitCauses: true,
             yearStudy: true,
             section: true,
+            nationalInfo: true,
+            nationalityCertificate: true,
             studentSchool: {
                include: {
+                  yearStudy: true,
+                  passType: true,
+                  certificateStatus: true,
                   studySubCategory: {
                      include: {
                         studyCategory: true,
@@ -104,14 +143,23 @@ Student.getBySearch = async (conditions, result) => {
                },
             },
             studentLevel: {
+               take: 1,
+               orderBy: {
+                  idStudentLevel: "desc",
+               },
                where: {
                   ...studentLevel,
                },
             },
-            studentGraduation: true,
+            studentGraduation: {
+               include: {
+                  yearStudy: true,
+               },
+            },
             studentImage: true,
             studentStatus: true,
             acceptedType: true,
+            studentResponsables: true,
             address: {
                include: {
                   province: {
@@ -137,21 +185,24 @@ Student.getBySearch = async (conditions, result) => {
 Student.getStudentsCount = async (conditions, result) => {
    let studentLevel = {};
    if (conditions.studentLevel) {
+      console.log(conditions.studentLevel);
       studentLevel.level = conditions.studentLevel;
       delete conditions.studentLevel;
    }
-
    try {
       const students = await prismaInstance.student.findMany({
          where: {
             ...conditions,
          },
          include: {
-            _count: true,
             yearStudy: true,
             section: true,
             studentSchool: true,
             studentLevel: {
+               take: 1,
+               orderBy: {
+                  idStudentLevel: "desc",
+               },
                where: {
                   ...studentLevel,
                },
@@ -171,11 +222,7 @@ Student.getStudentsCount = async (conditions, result) => {
             },
          },
       });
-
-      let filteredStudent = students.filter((student) => {
-         return student.studentLevel.length > 0;
-      });
-      result(null, { count: filteredStudent.length });
+      result(null, { studentsCount: students.length });
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
@@ -188,12 +235,13 @@ Student.getAll = async (result) => {
          include: {
             yearStudy: true,
             section: true,
-            studentSchool: {
-               include: {
-                  studySubCategory: true,
+            studentSchool: true,
+            studentLevel: {
+               take: 1,
+               orderBy: {
+                  idStudentLevel: "desc",
                },
             },
-            studentLevel: true,
             studentGraduation: true,
             studentImage: true,
             studentStatus: true,
@@ -216,13 +264,28 @@ Student.getAll = async (result) => {
    }
 };
 
-Student.updateById = async (studentId, student, result) => {
+Student.updateById = async (studentId, student, studentInfo, result) => {
    try {
+      console.log(studentInfo);
       const updateStudent = await prismaInstance.student.update({
          where: { idStudent: JSON.parse(studentId) },
          data: student,
       });
-      result(null, updateStudent);
+      const updateStudentLevel = await prismaInstance.studentLevel.update({
+         where: {
+            idStudentLevel: parseInt(studentInfo.studentLevel.idStudentLevel),
+         },
+         data: {
+            level: studentInfo.studentLevel.level,
+            class: studentInfo.studentLevel.class,
+            yearStudyId: parseInt(studentInfo.studentLevel.yearStudyId),
+            studentId: parseInt(studentInfo.studentLevel.studentId),
+         },
+      });
+      result(null, {
+         updateStudent: updateStudent,
+         updateStudentLevel: updateStudentLevel,
+      });
    } catch (error) {
       console.log(prismaErrorHandling(error));
       result(prismaErrorHandling(error), null);

@@ -11,21 +11,22 @@ exports.create = (req, res) => {
       schoolName: req.body.schoolName,
       graduationDate: req.body.graduationDate,
       documentDate: req.body.documentDate,
-      totalMarks: req.body.totalMarks * 1,
+      totalMarks: parseInt(req.body.totalMarks) * 1,
       average: req.body.average * 1,
-      documentNumber: req.body.documentNumber * 1,
+      documentNumber: parseInt(req.body.documentNumber) * 1,
       documentDate: req.body.documentDate,
-      lessonCount: req.body.lessonCount * 1,
-      Directorate: req.body.Directorate,
+      lessonCount: parseInt(req.body.lessonCount) * 1,
+      directorate: req.body.directorate,
       studySubCategoryId: req.body.studySubCategoryId,
-      studentId: req.body.studentId,
+      studentId: parseInt(req.body.studentId) * 1,
+      passTypeId: req.body.passTypeId * 1,
+      documentDigit: parseInt(req.body.documentDigit) * 1,
+      examNumber: req.body.examNumber,
       certificateStatusId: req.body.certificateStatusId,
       certificateStatusDescription: req.body.certificateStatusDescription,
-      passTypeId: req.body.passTypeId * 1,
-      imageTypeId: req.body.imageTypeId * 1,
    });
 
-   StudentSchool.create(studentSchool, (err, data) => {
+   StudentSchool.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

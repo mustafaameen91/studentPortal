@@ -5,16 +5,27 @@ const {
 
 const NationalityCertificate = function (nationalityCertificate) {
    this.nationalityNumber = nationalityCertificate.nationalityNumber;
-   this.nationalityIssue = nationalityCertificate.nationalityIssue;
-   this.nationalityPlace = nationalityCertificate.nationalityPlace;
    this.studentId = nationalityCertificate.studentId;
 };
 
 NationalityCertificate.create = async (newNationalityCertificate, result) => {
    try {
+      let data = {
+         nationalityNumber: newNationalityCertificate.nationalityNumber,
+         studentId: newNationalityCertificate.studentId,
+      };
       const nationalityCertificate =
-         await prismaInstance.nationalityCertificate.create({
-            data: newNationalityCertificate,
+         await prismaInstance.nationalityCertificate.upsert({
+            where: {
+               idNationalityCertificate:
+                  newNationalityCertificate.idNationalityCertificate
+                     ? parseInt(
+                          newNationalityCertificate.idNationalityCertificate
+                       )
+                     : -1,
+            },
+            create: data,
+            update: data,
          });
 
       result(null, nationalityCertificate);

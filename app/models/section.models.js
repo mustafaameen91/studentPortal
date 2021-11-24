@@ -2,6 +2,7 @@ const {
    prismaErrorHandling,
    prismaInstance,
 } = require("./../middleware/handleError.middleware.js");
+const fs = require("fs");
 
 const Section = function (section) {
    this.sectionName = section.sectionName;
@@ -19,6 +20,25 @@ Section.create = async (newSection, result) => {
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
+   }
+};
+
+Section.createFromFile = async (result) => {
+   let data = JSON.parse(fs.readFileSync(__dirname + "/sections.txt", "utf-8"));
+
+   if (data.length > 0) {
+      try {
+         const section = await prismaInstance.section.createMany({
+            data: data,
+         });
+
+         result(null, section);
+      } catch (err) {
+         console.log(prismaErrorHandling(err));
+         result(prismaErrorHandling(err), null);
+      }
+   } else {
+      result(null, { message: "notValid" });
    }
 };
 

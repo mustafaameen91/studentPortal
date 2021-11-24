@@ -12,7 +12,7 @@ exports.create = (req, res) => {
       createdBy: req.body.createdBy,
    });
 
-   PassType.create(passType, (err, data) => {
+   PassType.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

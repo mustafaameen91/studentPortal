@@ -7,7 +7,7 @@ module.exports = (app) => {
 
    app.get("/api/user/:id", user.findOne);
 
-   app.post("/api/login", user.findByLogin);
+   app.post("/api/login", user.login);
 
    app.put("/api/user/:id", user.update);
 

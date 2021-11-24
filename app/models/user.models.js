@@ -23,16 +23,11 @@ User.create = async (newUser, result) => {
    }
 };
 
-User.login = async (user, result) => {
+User.findById = async (userId, result) => {
    try {
-      const singleUser = await prismaInstance.user.findFirst({
+      const singleUser = await prismaInstance.user.findUnique({
          where: {
-            userName: user.userName,
-            password: user.password,
-         },
-         include: {
-            section: true,
-            role: true,
+            idUser: JSON.parse(userId),
          },
       });
 
@@ -42,7 +37,7 @@ User.login = async (user, result) => {
          result({
             error: "Not Found",
             code: 404,
-            errorMessage: "Not Found User with this credential",
+            errorMessage: "Not Found User with this Id",
          });
       }
    } catch (err) {
@@ -51,11 +46,12 @@ User.login = async (user, result) => {
    }
 };
 
-User.findById = async (userId, result) => {
+User.loginUser = async (username, password, result) => {
    try {
-      const singleUser = await prismaInstance.user.findUnique({
+      const singleUser = await prismaInstance.user.findFirst({
          where: {
-            idUser: JSON.parse(userId),
+            userName: username,
+            password: password,
          },
       });
 

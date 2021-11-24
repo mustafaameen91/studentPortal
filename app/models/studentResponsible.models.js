@@ -11,11 +11,34 @@ const StudentResponsible = function (studentResponsible) {
 
 StudentResponsible.create = async (newStudentResponsible, result) => {
    try {
-      const studentResponsible = await prismaInstance.studentResponsible.create(
+      const studentResponsible = await prismaInstance.studentResponsible.upsert(
          {
-            data: newStudentResponsible,
+            where: {
+               idStudentResponsible: newStudentResponsible.idStudentResponsible
+                  ? parseInt(newStudentResponsible.idStudentResponsible)
+                  : -1,
+            },
+            update: newStudentResponsible,
+            create: newStudentResponsible,
          }
       );
+
+      result(null, studentResponsible);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
+StudentResponsible.createManyResponsible = async (
+   studentsResponsible,
+   result
+) => {
+   try {
+      const studentResponsible =
+         await prismaInstance.studentResponsible.createMany({
+            data: studentsResponsible,
+         });
 
       result(null, studentResponsible);
    } catch (err) {

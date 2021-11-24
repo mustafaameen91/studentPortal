@@ -47,7 +47,11 @@ StudyCategory.findById = async (studyCategoryId, result) => {
 
 StudyCategory.getAll = async (result) => {
    try {
-      const studyCategories = await prismaInstance.studyCategory.findMany();
+      const studyCategories = await prismaInstance.studyCategory.findMany({
+         include: {
+            StudySubCategory: true,
+         },
+      });
       result(null, studyCategories);
    } catch (err) {
       console.log(prismaErrorHandling(err));

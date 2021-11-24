@@ -9,12 +9,12 @@ exports.create = (req, res) => {
 
    const nationalInfo = new NationalInfo({
       nationalNumber: req.body.nationalNumber,
-      issueNumber: req.body.issueNumber,
-      issuePlace: req.body.issuePlace,
       studentId: req.body.studentId,
+      motherName: req.body.motherName,
+      religion: req.body.religion,
    });
 
-   NationalInfo.create(nationalInfo, (err, data) => {
+   NationalInfo.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

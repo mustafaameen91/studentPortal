@@ -3,6 +3,8 @@ module.exports = (app) => {
 
    app.post("/api/addExitCauses", exitCauses.create);
 
+   app.post("/api/addManyExitCauses", exitCauses.createMany);
+
    app.get("/api/allExitCauses", exitCauses.findAll);
 
    app.get("/api/exitCauses/:id", exitCauses.findOne);

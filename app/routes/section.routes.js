@@ -5,6 +5,8 @@ module.exports = (app) => {
 
    app.get("/api/sections", section.findAll);
 
+   app.get("/api/createFile", section.createByFile);
+
    app.get("/api/section/:id", section.findOne);
 
    app.put("/api/section/:id", section.update);

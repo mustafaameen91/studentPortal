@@ -5,15 +5,27 @@ const {
 
 const NationalInfo = function (nationalInfo) {
    this.nationalNumber = nationalInfo.nationalNumber;
-   this.issueNumber = nationalInfo.issueNumber;
-   this.issuePlace = nationalInfo.issuePlace;
    this.studentId = nationalInfo.studentId;
+   this.motherName = nationalInfo.motherName;
+   this.religion = nationalInfo.religion;
 };
 
 NationalInfo.create = async (newNationalInfo, result) => {
+   let data = {
+      nationalNumber: newNationalInfo.nationalNumber,
+      studentId: newNationalInfo.studentId,
+      motherName: newNationalInfo.motherName,
+      religion: newNationalInfo.religion,
+   };
    try {
-      const nationalInfo = await prismaInstance.nationalInfo.create({
-         data: newNationalInfo,
+      const nationalInfo = await prismaInstance.nationalInfo.upsert({
+         where: {
+            idNationalInfo: newNationalInfo.idNationalInfo
+               ? parseInt(newNationalInfo.idNationalInfo)
+               : -1,
+         },
+         update: data,
+         create: data,
       });
 
       result(null, nationalInfo);

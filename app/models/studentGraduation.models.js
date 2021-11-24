@@ -2,6 +2,7 @@ const {
    prismaErrorHandling,
    prismaInstance,
 } = require("./../middleware/handleError.middleware.js");
+const fs = require("fs");
 
 const StudentGraduation = function (studentGraduation) {
    this.graduationDate = studentGraduation.graduationDate;
@@ -18,6 +19,27 @@ StudentGraduation.create = async (newStudentGraduation, result) => {
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
+   }
+};
+
+StudentGraduation.createFromFile = async (result) => {
+   let data = JSON.parse(
+      fs.readFileSync(__dirname + "/studentsGraduation.txt", "utf-8")
+   );
+
+   if (data.length > 0) {
+      try {
+         const section = await prismaInstance.studentGraduation.createMany({
+            data: data,
+         });
+
+         result(null, section);
+      } catch (err) {
+         console.log(prismaErrorHandling(err));
+         result(prismaErrorHandling(err), null);
+      }
+   } else {
+      result(null, { message: "notValid" });
    }
 };
 

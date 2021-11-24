@@ -6,25 +6,51 @@ const {
 const StudentSchool = function (studentSchool) {
    this.schoolName = studentSchool.schoolName;
    this.graduationDate = studentSchool.graduationDate;
-   this.totalMarks = studentSchool.totalMarks;
+   this.totalMarks = studentSchool.totalMarks * 1;
    this.average = studentSchool.average;
-   this.documentNumber = studentSchool.documentNumber;
-   this.lessonCount = studentSchool.lessonCount;
-   this.Directorate = studentSchool.Directorate;
+   this.documentNumber = studentSchool.documentNumber * 1;
+   this.lessonCount = studentSchool.lessonCount * 1;
+   this.directorate = studentSchool.directorate;
    this.documentDate = studentSchool.documentDate;
-   this.studySubCategoryId = studentSchool.studySubCategoryId;
-   this.studentId = studentSchool.studentId;
+   this.studySubCategoryId = studentSchool.studySubCategoryId * 1;
+   this.studentId = studentSchool.studentId * 1;
+   this.passTypeId = studentSchool.passTypeId * 1;
+   this.documentDigit = studentSchool.documentDigit * 1;
+   this.examNumber = studentSchool.examNumber;
    this.certificateStatusId = studentSchool.certificateStatusId;
    this.certificateStatusDescription =
       studentSchool.certificateStatusDescription;
-   this.passTypeId = studentSchool.passTypeId;
-   this.imageTypeId = studentSchool.imageTypeId;
 };
 
 StudentSchool.create = async (newStudentSchool, result) => {
+   let data = {
+      schoolName: newStudentSchool.schoolName,
+      graduationDate: newStudentSchool.graduationDate,
+      totalMarks: newStudentSchool.totalMarks * 1,
+      average: newStudentSchool.average * 1,
+      documentNumber: newStudentSchool.documentNumber * 1,
+      lessonCount: newStudentSchool.lessonCount * 1,
+      directorate: newStudentSchool.directorate,
+      documentDate: newStudentSchool.documentDate,
+      studySubCategoryId: newStudentSchool.studySubCategoryId * 1,
+      studentId: newStudentSchool.studentId * 1,
+      passTypeId: newStudentSchool.passTypeId * 1,
+      documentDigit: newStudentSchool.documentDigit * 1,
+      examNumber: newStudentSchool.examNumber,
+      certificateStatusId: newStudentSchool.certificateStatusId * 1,
+      certificateStatusDescription:
+         newStudentSchool.certificateStatusDescription,
+   };
+
    try {
-      const studentSchool = await prismaInstance.studentSchool.create({
-         data: newStudentSchool,
+      const studentSchool = await prismaInstance.studentSchool.upsert({
+         where: {
+            idStudentSchool: newStudentSchool.idStudentSchool
+               ? parseInt(newStudentSchool.idStudentSchool)
+               : -1,
+         },
+         create: data,
+         update: data,
       });
 
       result(null, studentSchool);

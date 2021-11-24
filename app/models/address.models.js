@@ -4,18 +4,33 @@ const {
 } = require("./../middleware/handleError.middleware.js");
 
 const Address = function (address) {
-   this.provinceId = address.provinceId;
+   this.provinceId = address.provinceId * 1;
    this.district = address.district;
    this.avenue = address.avenue;
    this.houseNumber = address.houseNumber;
    this.streetNumber = address.streetNumber;
-   this.studentId = address.studentId;
+   this.studentId = address.studentId * 1;
 };
 
 Address.create = async (newAddress, result) => {
+   let data = {
+      provinceId: newAddress.provinceId * 1,
+      district: newAddress.district,
+      avenue: newAddress.avenue,
+      houseNumber: newAddress.houseNumber,
+      streetNumber: newAddress.streetNumber,
+      studentId: newAddress.studentId * 1,
+   };
+   console.log(newAddress);
    try {
-      const address = await prismaInstance.address.create({
-         data: newAddress,
+      const address = await prismaInstance.address.upsert({
+         where: {
+            idAddress: newAddress.idAddress
+               ? parseInt(newAddress.idAddress)
+               : -1,
+         },
+         create: data,
+         update: data,
       });
       console.log(address);
       result(null, address);

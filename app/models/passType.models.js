@@ -10,7 +10,7 @@ const PassType = function (passType) {
 
 PassType.create = async (newPassType, result) => {
    try {
-      const passType = await prismaInstance.passType.create({
+      const passType = await prismaInstance.passType.createMany({
          data: newPassType,
       });
 

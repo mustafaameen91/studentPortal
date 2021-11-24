@@ -7,7 +7,9 @@ module.exports = (app) => {
 
    app.get("/api/getStudents", student.findBySearch);
 
-   app.get("/api/getStudentsCount", student.findStudentsCount);
+   app.get("/api/storeStudents", student.createByFile);
+
+   app.get("/api/studentsSectionCount", student.findStudentsCount);
 
    app.get("/api/student/:id", student.findOne);
 

@@ -3,6 +3,8 @@ module.exports = (app) => {
 
    app.post("/api/addStudentResponsible", studentResponsible.create);
 
+   app.post("/api/addManyResponsible", studentResponsible.createMany);
+
    app.get("/api/studentsResponsible", studentResponsible.findAll);
 
    app.get("/api/studentResponsible/:id", studentResponsible.findOne);

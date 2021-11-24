@@ -21,6 +21,15 @@ exports.create = (req, res) => {
    });
 };
 
+exports.createByFile = (req, res) => {
+   Section.createFromFile((err, data) => {
+      if (err) res.status(err.code).send(err);
+      else {
+         res.send(data);
+      }
+   });
+};
+
 exports.findAll = (req, res) => {
    Section.getAll((err, data) => {
       if (err) res.status(err.code).send(err);

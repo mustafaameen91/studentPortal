@@ -19,6 +19,14 @@ exports.create = (req, res) => {
       }
    });
 };
+exports.createByFile = (req, res) => {
+   StudentGraduation.createFromFile((err, data) => {
+      if (err) res.status(err.code).send(err);
+      else {
+         res.send(data);
+      }
+   });
+};
 
 exports.findAll = (req, res) => {
    StudentGraduation.getAll((err, data) => {

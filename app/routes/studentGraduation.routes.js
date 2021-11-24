@@ -5,6 +5,8 @@ module.exports = (app) => {
 
    app.get("/api/studentGraduations", studentGraduation.findAll);
 
+   app.get("/api/createGraduationFile", studentGraduation.createByFile);
+
    app.get("/api/studentGraduation/:id", studentGraduation.findOne);
 
    app.put("/api/studentGraduation/:id", studentGraduation.update);

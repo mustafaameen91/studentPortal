@@ -9,12 +9,10 @@ exports.create = (req, res) => {
 
    const nationalityCertificate = new NationalityCertificate({
       nationalityNumber: req.body.nationalityNumber,
-      nationalityIssue: req.body.nationalityIssue,
-      nationalityPlace: req.body.nationalityPlace,
       studentId: req.body.studentId,
    });
 
-   NationalityCertificate.create(nationalityCertificate, (err, data) => {
+   NationalityCertificate.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

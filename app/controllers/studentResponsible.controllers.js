@@ -1,3 +1,4 @@
+const e = require("express");
 const StudentResponsible = require("../models/studentResponsible.models.js");
 
 exports.create = (req, res) => {
@@ -7,13 +8,22 @@ exports.create = (req, res) => {
       });
    }
 
-   const studentResponsible = new StudentResponsible({
-      responsibleName: req.body.responsibleName,
-      responsiblePhone: req.body.responsiblePhone,
-      studentId: req.body.studentId,
-   });
-
    StudentResponsible.create(studentResponsible, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else {
+         res.send(data);
+      }
+   });
+};
+
+exports.createMany = (req, res) => {
+   if (!req.body) {
+      res.status(400).send({
+         message: "Content can not be empty!",
+      });
+   }
+
+   StudentResponsible.createManyResponsible(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

@@ -13,10 +13,10 @@ exports.create = (req, res) => {
       avenue: req.body.avenue,
       houseNumber: req.body.houseNumber,
       streetNumber: req.body.streetNumber,
-      studentId: req.body.studentId,
+      studentId: req.body.studentId * 1,
    });
 
-   Address.create(address, (err, data) => {
+   Address.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);

@@ -1,4 +1,6 @@
 const User = require("../models/user.models.js");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.create = (req, res) => {
    if (!req.body) {
@@ -36,10 +38,15 @@ exports.findOne = (req, res) => {
    });
 };
 
-exports.findByLogin = (req, res) => {
-   User.login(req.body, (err, data) => {
+exports.login = (req, res) => {
+   User.loginUser(req.body.userName, req.body.password, (err, data) => {
       if (err) res.status(err.code).send(err);
-      else res.send(data);
+      else {
+         const token = jwt.sign(data, process.env.JWT_KEY, {
+            expiresIn: "30d",
+         });
+         res.send({ token });
+      }
    });
 };
 

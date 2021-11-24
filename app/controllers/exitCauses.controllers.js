@@ -9,10 +9,26 @@ exports.create = (req, res) => {
 
    const exitCauses = new ExitCauses({
       exitCausesTitle: req.body.exitCausesTitle,
+      studentId: req.body.studentId,
       createdBy: req.body.createdBy,
    });
 
    ExitCauses.create(exitCauses, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else {
+         res.send(data);
+      }
+   });
+};
+
+exports.createMany = (req, res) => {
+   if (!req.body) {
+      res.status(400).send({
+         message: "Content can not be empty!",
+      });
+   }
+
+   ExitCauses.createMany(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
