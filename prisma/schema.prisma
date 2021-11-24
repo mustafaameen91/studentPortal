@@ -229,7 +229,7 @@ model StudentImage {
   idStudentImage Int       @id @default(autoincrement())
   imagePath      String    @db.VarChar(220)
   imageType      ImageType @relation(fields: [imageTypeId], references: [idImageType])
-  imageTypeId    Int
+  imageTypeId    Int       @default(1)
   student        Student   @relation(fields: [studentId], references: [idStudent])
   studentId      Int
 }
