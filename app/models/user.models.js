@@ -55,6 +55,8 @@ User.loginUser = async (username, password, result) => {
          },
       });
 
+      console.log(singleUser);
+
       if (singleUser) {
          result(null, singleUser);
       } else {
