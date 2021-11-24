@@ -25,6 +25,9 @@
  */
 
 
+//! moment.js locale configuration
+
+
 /**
  * @license
  * Lodash <https://lodash.com/>
@@ -33,12 +36,6 @@
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-
-
-//! moment.js locale configuration
-
-
-//! moment.js locale configuration
 
 
 /*!
@@ -65,3 +62,6 @@
  * (c) 2021 Evan You
  * @license MIT
  */
+
+
+//! moment.js locale configuration
