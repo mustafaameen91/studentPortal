@@ -125,6 +125,24 @@ exports.findOne = (req, res) => {
    });
 };
 
+exports.updateNote = (req, res) => {
+   if (!req.body) {
+      res.status(400).send({
+         message: "Content can not be empty!",
+      });
+   }
+
+   Student.updateByNote(
+      req.params.id,
+      new Student(req.body),
+      req.body,
+      (err, data) => {
+         if (err) res.status(err.code).send(err);
+         else res.send(data);
+      }
+   );
+};
+
 exports.update = (req, res) => {
    if (!req.body) {
       res.status(400).send({

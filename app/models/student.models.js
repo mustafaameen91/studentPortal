@@ -264,6 +264,20 @@ Student.getAll = async (result) => {
    }
 };
 
+Student.updateByNote = async (studentId, student, result) => {
+   try {
+      const updateStudent = await prismaInstance.student.update({
+         where: { idStudent: JSON.parse(studentId) },
+         data: student,
+      });
+
+      result(null, updateStudent);
+   } catch (error) {
+      console.log(prismaErrorHandling(error));
+      result(prismaErrorHandling(error), null);
+   }
+};
+
 Student.updateById = async (studentId, student, studentInfo, result) => {
    try {
       console.log(studentInfo);
