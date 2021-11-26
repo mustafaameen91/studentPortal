@@ -45,7 +45,6 @@ AdministrativeOrder.createManyOrders = async (
                ` / ${admin.orderTitleString} - ${admin.year}`,
          };
       });
-      console.log(notes);
 
       let adminData = newAdministrativeOrders.map((order) => {
          return {
@@ -78,6 +77,15 @@ AdministrativeOrder.createManyOrders = async (
          },
       });
 
+      let updateNote = await prisma.$transaction(
+         notes.map((note) =>
+            prisma.student.update({
+               where: { idStudent: note.studentId },
+               update: { note: note.note },
+            })
+         )
+      );
+
       if (studentStatusId * 1 == 3) {
          let data = condition.map((id) => {
             return {
@@ -97,6 +105,7 @@ AdministrativeOrder.createManyOrders = async (
       result(null, {
          administrativeOrder: administrativeOrder,
          studentStatus: changeStudentStatus,
+         updateNote: updateNote,
       });
    } catch (err) {
       console.log(prismaErrorHandling(err));
