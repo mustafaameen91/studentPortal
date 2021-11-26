@@ -81,7 +81,7 @@ AdministrativeOrder.createManyOrders = async (
          notes.map((note) =>
             prismaInstance.student.update({
                where: { idStudent: note.studentId },
-               update: { note: note.note },
+               data: { note: note.note },
             })
          )
       );
