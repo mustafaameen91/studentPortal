@@ -77,9 +77,9 @@ AdministrativeOrder.createManyOrders = async (
          },
       });
 
-      let updateNote = await prisma.$transaction(
+      let updateNote = await prismaInstance.$transaction(
          notes.map((note) =>
-            prisma.student.update({
+            prismaInstance.student.update({
                where: { idStudent: note.studentId },
                update: { note: note.note },
             })
