@@ -40,7 +40,9 @@ AdministrativeOrder.createManyOrders = async (
       let notes = newAdministrativeOrders.map((admin) => {
          return {
             studentId: admin.studentId * 1,
-            note: admin.note + ` / ${admin.title} - ${admin.year}`,
+            note:
+               admin.studentNote +
+               ` / ${admin.orderTitleString} - ${admin.year}`,
          };
       });
       console.log(notes);
