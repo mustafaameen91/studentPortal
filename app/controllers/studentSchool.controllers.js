@@ -24,6 +24,10 @@ exports.create = (req, res) => {
       examNumber: req.body.examNumber,
       certificateStatusId: req.body.certificateStatusId,
       certificateStatusDescription: req.body.certificateStatusDescription,
+      correctNumberAnswer: req.body.correctNumberAnswer,
+      correctDateAnswer: req.body.correctDateAnswer,
+      correctNumber: req.body.correctNumber,
+      correctDate: req.body.correctDate,
    });
 
    StudentSchool.create(req.body, (err, data) => {

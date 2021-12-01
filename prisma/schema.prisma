@@ -190,6 +190,10 @@ model StudentSchool {
   certificateStatus            CertificateStatus @relation(fields: [certificateStatusId], references: [idCertificateStatus])
   certificateStatusId          Int
   certificateStatusDescription String            @db.VarChar(220)
+  correctNumberAnswer          String            @default("0") @db.VarChar(220)
+  correctNumber                String            @default("0") @db.VarChar(220)
+  correctDateAnswer            String            @default("1960-01-01") @db.VarChar(220)
+  correctDate                  String            @default("1960-01-01") @db.VarChar(220)
   createdAt                    DateTime          @default(now())
 }
 

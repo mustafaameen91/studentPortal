@@ -20,6 +20,10 @@ const StudentSchool = function (studentSchool) {
    this.certificateStatusId = studentSchool.certificateStatusId;
    this.certificateStatusDescription =
       studentSchool.certificateStatusDescription;
+   this.correctNumberAnswer = studentSchool.correctNumberAnswer;
+   this.correctDateAnswer = studentSchool.correctDateAnswer;
+   this.correctNumber = studentSchool.correctNumber;
+   this.correctDate = studentSchool.correctDate;
 };
 
 StudentSchool.create = async (newStudentSchool, result) => {
@@ -40,6 +44,10 @@ StudentSchool.create = async (newStudentSchool, result) => {
       certificateStatusId: newStudentSchool.certificateStatusId * 1,
       certificateStatusDescription:
          newStudentSchool.certificateStatusDescription,
+      correctNumberAnswer: newStudentSchool.correctNumberAnswer,
+      correctDateAnswer: newStudentSchool.correctDateAnswer,
+      correctNumber: newStudentSchool.correctNumber,
+      correctDate: newStudentSchool.correctDate,
    };
 
    try {
