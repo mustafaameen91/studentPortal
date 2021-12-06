@@ -45,6 +45,10 @@ exports.searchArchive = (req, res) => {
       search.archiveSubjectId = req.query.subjectSearch * 1;
    }
 
+   if (req.query.sectionId) {
+      search.sectionId = req.query.sectionId * 1;
+   }
+
    if (req.query.archiveTypeId) {
       search.archiveTypeId = req.query.archiveTypeId * 1;
    }
