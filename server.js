@@ -135,6 +135,8 @@ require("./app/routes/archive.routes.js")(app);
 require("./app/routes/archiveSubject.routes.js")(app);
 require("./app/routes/archiveImage.routes.js")(app);
 require("./app/routes/imageType.routes.js")(app);
+require("./app/routes/studentPayment.routes.js")(app);
+require("./app/routes/sectionCost.routes.js")(app);
 
 const staticFileMiddleware = express.static(__dirname + "/dist");
 app.use(staticFileMiddleware);

@@ -75,13 +75,14 @@ model Role {
 }
 
 model Section {
-  idSection   Int       @id @default(autoincrement())
-  sectionName String    @db.VarChar(220)
-  code        String    @db.VarChar(220)
-  englishName String    @db.VarChar(220)
+  idSection   Int          @id @default(autoincrement())
+  sectionName String       @db.VarChar(220)
+  code        String       @db.VarChar(220)
+  englishName String       @db.VarChar(220)
   students    Student[]
   User        User[]
   Archive     Archive[]
+  SectionCost SectionCost?
 }
 
 model Student {
@@ -113,6 +114,7 @@ model Student {
   studentImage           StudentImage[]
   address                Address?
   ExitCauses             ExitCauses[]
+  StudentPayment         StudentPayment[]
 }
 
 model YearStudy {
@@ -300,4 +302,20 @@ model ArchiveImage {
   imagePath      String  @db.VarChar(220)
   archive        Archive @relation(fields: [archiveId], references: [idArchive])
   archiveId      Int
+}
+
+model SectionCost {
+  idSectionCost Int     @id @default(autoincrement())
+  section       Section @relation(fields: [sectionId], references: [idSection])
+  sectionId     Int     @unique
+  cost          Float
+  attempts      Int
+}
+
+model StudentPayment {
+  idStudentPayment Int      @id @default(autoincrement())
+  feesPay          Float
+  student          Student  @relation(fields: [studentId], references: [idStudent])
+  studentId        Int
+  createdAt        DateTime @default(now())
 }
