@@ -65,6 +65,16 @@ Section.findById = async (sectionId, result) => {
    }
 };
 
+Section.getAllWithFees = async (result) => {
+   try {
+      const sections = await prismaInstance.section.findMany({});
+      result(null, sections);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 Section.getAll = async (result) => {
    try {
       const sections = await prismaInstance.section.findMany();

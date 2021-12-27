@@ -46,7 +46,7 @@ PassType.findById = async (passTypeId, result) => {
 
 PassType.getAll = async (result) => {
    try {
-      const passTypes = await prismaInstance.passType.findMany();
+      const passTypes = await prismaInstance.passType.findMany({});
       result(null, passTypes);
    } catch (err) {
       console.log(prismaErrorHandling(err));

@@ -8,8 +8,9 @@ exports.create = (req, res) => {
    }
 
    const studentPayment = new StudentPayment({
-      feesPay: req.body.feesPay,
       studentId: req.body.studentId,
+      discountId: req.body.discountId,
+      level: req.body.level,
    });
 
    StudentPayment.create(studentPayment, (err, data) => {

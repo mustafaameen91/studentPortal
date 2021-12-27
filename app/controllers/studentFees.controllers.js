@@ -1,4 +1,4 @@
-const SectionCost = require("../models/sectionCost.models.js");
+const StudentFees = require("../models/studentFees.models.js");
 
 exports.create = (req, res) => {
    if (!req.body) {
@@ -7,14 +7,16 @@ exports.create = (req, res) => {
       });
    }
 
-   const sectionCost = new SectionCost({
-      sectionId: req.body.sectionId,
-      cost: parseFloat(req.body.cost),
-      attempts: parseInt(req.body.attempts),
-      level: parseInt(req.body.level),
+   const studentFees = new StudentFees({
+      feesPay: req.body.feesPay,
+      payTypeId: req.body.payTypeId,
+      payNote: req.body.payNote,
+      createdBy: req.body.createdBy,
+      checkNumber: req.body.checkNumber,
+      studentPaymentId: req.body.studentPaymentId,
    });
 
-   SectionCost.create(sectionCost, (err, data) => {
+   StudentFees.create(studentFees, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
@@ -22,26 +24,29 @@ exports.create = (req, res) => {
    });
 };
 
-exports.findAll = (req, res) => {
-   SectionCost.getAll((err, data) => {
+exports.findLast = (req, res) => {
+   StudentFees.getLast((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
 };
 
-exports.findOneBySectionAndLevel = (req, res) => {
-   SectionCost.findByIdOfSectionAndLevel(
-      req.query.id,
-      req.query.level,
-      (err, data) => {
-         if (err) res.status(err.code).send(err);
-         else res.send(data);
-      }
-   );
+exports.findByStudentId = (req, res) => {
+   StudentFees.findByStudentId(req.params.id, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
+};
+
+exports.findAll = (req, res) => {
+   StudentFees.getAll((err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
 };
 
 exports.findOne = (req, res) => {
-   SectionCost.findById(req.params.id, (err, data) => {
+   StudentFees.findById(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
@@ -54,9 +59,9 @@ exports.update = (req, res) => {
       });
    }
 
-   SectionCost.updateById(
+   StudentFees.updateById(
       req.params.id,
-      new SectionCost(req.body),
+      new StudentFees(req.body),
       (err, data) => {
          if (err) res.status(err.code).send(err);
          else res.send(data);
@@ -65,14 +70,14 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-   SectionCost.remove(req.params.id, (err, data) => {
+   StudentFees.remove(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `Pass Type was deleted successfully!` });
    });
 };
 
 exports.deleteAll = (req, res) => {
-   SectionCost.removeAll((err, data) => {
+   StudentFees.removeAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `All Pass Types were deleted successfully!` });
    });

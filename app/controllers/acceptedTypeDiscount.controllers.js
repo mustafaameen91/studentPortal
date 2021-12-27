@@ -1,4 +1,4 @@
-const SectionCost = require("../models/sectionCost.models.js");
+const AcceptedTypeDiscount = require("../models/acceptedTypeDiscount.models.js");
 
 exports.create = (req, res) => {
    if (!req.body) {
@@ -7,14 +7,12 @@ exports.create = (req, res) => {
       });
    }
 
-   const sectionCost = new SectionCost({
-      sectionId: req.body.sectionId,
-      cost: parseFloat(req.body.cost),
-      attempts: parseInt(req.body.attempts),
-      level: parseInt(req.body.level),
+   const acceptedTypeDiscount = new AcceptedTypeDiscount({
+      acceptedType: req.body.acceptedType,
+      discount: parseInt(req.body.discount),
    });
 
-   SectionCost.create(sectionCost, (err, data) => {
+   AcceptedTypeDiscount.create(acceptedTypeDiscount, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
@@ -23,25 +21,14 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-   SectionCost.getAll((err, data) => {
+   AcceptedTypeDiscount.getAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
 };
 
-exports.findOneBySectionAndLevel = (req, res) => {
-   SectionCost.findByIdOfSectionAndLevel(
-      req.query.id,
-      req.query.level,
-      (err, data) => {
-         if (err) res.status(err.code).send(err);
-         else res.send(data);
-      }
-   );
-};
-
 exports.findOne = (req, res) => {
-   SectionCost.findById(req.params.id, (err, data) => {
+   AcceptedTypeDiscount.findById(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
@@ -54,9 +41,9 @@ exports.update = (req, res) => {
       });
    }
 
-   SectionCost.updateById(
+   AcceptedTypeDiscount.updateById(
       req.params.id,
-      new SectionCost(req.body),
+      new AcceptedTypeDiscount(req.body),
       (err, data) => {
          if (err) res.status(err.code).send(err);
          else res.send(data);
@@ -65,14 +52,14 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-   SectionCost.remove(req.params.id, (err, data) => {
+   AcceptedTypeDiscount.remove(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `Pass Type was deleted successfully!` });
    });
 };
 
 exports.deleteAll = (req, res) => {
-   SectionCost.removeAll((err, data) => {
+   AcceptedTypeDiscount.removeAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `All Pass Types were deleted successfully!` });
    });

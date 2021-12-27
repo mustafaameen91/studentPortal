@@ -7,6 +7,8 @@ module.exports = (app) => {
 
    app.get("/api/sectionCost/:id", sectionCost.findOne);
 
+   app.get("/api/studentSectionCost", sectionCost.findOneBySectionAndLevel);
+
    app.put("/api/sectionCost/:id", sectionCost.update);
 
    app.delete("/api/sectionCost/:id", sectionCost.delete);

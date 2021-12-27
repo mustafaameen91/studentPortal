@@ -65,6 +65,7 @@ model User {
   administrativeOrders AdministrativeOrder[]
   OrderTitles          OrderTitle[]
   ExitCauses           ExitCauses[]
+  StudentFees          StudentFees[]
 }
 
 model Role {
@@ -75,14 +76,14 @@ model Role {
 }
 
 model Section {
-  idSection   Int          @id @default(autoincrement())
-  sectionName String       @db.VarChar(220)
-  code        String       @db.VarChar(220)
-  englishName String       @db.VarChar(220)
+  idSection   Int           @id @default(autoincrement())
+  sectionName String        @db.VarChar(220)
+  code        String        @db.VarChar(220)
+  englishName String        @db.VarChar(220)
   students    Student[]
   User        User[]
   Archive     Archive[]
-  SectionCost SectionCost?
+  SectionCost SectionCost[]
 }
 
 model Student {
@@ -307,15 +308,46 @@ model ArchiveImage {
 model SectionCost {
   idSectionCost Int     @id @default(autoincrement())
   section       Section @relation(fields: [sectionId], references: [idSection])
-  sectionId     Int     @unique
+  sectionId     Int     @default(1)
   cost          Float
   attempts      Int
+  level         Int
 }
 
 model StudentPayment {
-  idStudentPayment Int      @id @default(autoincrement())
+  idStudentPayment     Int                  @id @default(autoincrement())
+  student              Student              @relation(fields: [studentId], references: [idStudent])
+  studentId            Int
+  createdAt            DateTime             @default(now())
+  acceptedTypeDiscount AcceptedTypeDiscount @relation(fields: [discountId], references: [idAcceptedTypeDiscount])
+  discountId           Int
+  level                Int
+  StudentFees          StudentFees[]
+}
+
+model StudentFees {
+  idStudentFees    Int            @id @default(autoincrement())
   feesPay          Float
-  student          Student  @relation(fields: [studentId], references: [idStudent])
-  studentId        Int
-  createdAt        DateTime @default(now())
+  payType          PayType        @relation(fields: [payTypeId], references: [idPayType])
+  payTypeId        Int
+  payNote          String         @db.Text
+  user             User           @relation(fields: [createdBy], references: [idUser])
+  createdBy        Int
+  studentPayment   StudentPayment @relation(fields: [studentPaymentId], references: [idStudentPayment])
+  studentPaymentId Int
+  createdAt        DateTime       @default(now())
+  checkNumber      String         @db.VarChar(220)
+}
+
+model PayType {
+  idPayType   Int           @id @default(autoincrement())
+  typeName    String        @db.VarChar(220)
+  StudentFees StudentFees[]
+}
+
+model AcceptedTypeDiscount {
+  idAcceptedTypeDiscount Int              @id @default(autoincrement())
+  acceptedType           String           @db.VarChar(220)
+  discount               Int
+  StudentPayment         StudentPayment[]
 }

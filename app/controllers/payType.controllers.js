@@ -1,4 +1,4 @@
-const SectionCost = require("../models/sectionCost.models.js");
+const PayType = require("../models/payType.models.js");
 
 exports.create = (req, res) => {
    if (!req.body) {
@@ -7,14 +7,11 @@ exports.create = (req, res) => {
       });
    }
 
-   const sectionCost = new SectionCost({
-      sectionId: req.body.sectionId,
-      cost: parseFloat(req.body.cost),
-      attempts: parseInt(req.body.attempts),
-      level: parseInt(req.body.level),
+   const payType = new PayType({
+      typeName: req.body.typeName,
    });
 
-   SectionCost.create(sectionCost, (err, data) => {
+   PayType.create(payType, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
@@ -23,25 +20,14 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-   SectionCost.getAll((err, data) => {
+   PayType.getAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
 };
 
-exports.findOneBySectionAndLevel = (req, res) => {
-   SectionCost.findByIdOfSectionAndLevel(
-      req.query.id,
-      req.query.level,
-      (err, data) => {
-         if (err) res.status(err.code).send(err);
-         else res.send(data);
-      }
-   );
-};
-
 exports.findOne = (req, res) => {
-   SectionCost.findById(req.params.id, (err, data) => {
+   PayType.findById(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
@@ -54,25 +40,21 @@ exports.update = (req, res) => {
       });
    }
 
-   SectionCost.updateById(
-      req.params.id,
-      new SectionCost(req.body),
-      (err, data) => {
-         if (err) res.status(err.code).send(err);
-         else res.send(data);
-      }
-   );
+   PayType.updateById(req.params.id, new PayType(req.body), (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
 };
 
 exports.delete = (req, res) => {
-   SectionCost.remove(req.params.id, (err, data) => {
+   PayType.remove(req.params.id, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `Pass Type was deleted successfully!` });
    });
 };
 
 exports.deleteAll = (req, res) => {
-   SectionCost.removeAll((err, data) => {
+   PayType.removeAll((err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send({ message: `All Pass Types were deleted successfully!` });
    });

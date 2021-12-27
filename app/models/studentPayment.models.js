@@ -4,13 +4,14 @@ const {
 } = require("./../middleware/handleError.middleware.js");
 
 const StudentPayment = function (studentPayment) {
-   this.feesPay = studentPayment.feesPay;
    this.studentId = studentPayment.studentId;
+   this.discountId = studentPayment.discountId;
+   this.level = studentPayment.level;
 };
 
 StudentPayment.create = async (newStudentPayment, result) => {
    try {
-      const studentPayment = await prismaInstance.studentPayment.createMany({
+      const studentPayment = await prismaInstance.studentPayment.create({
          data: newStudentPayment,
       });
 
@@ -23,15 +24,19 @@ StudentPayment.create = async (newStudentPayment, result) => {
 
 StudentPayment.findById = async (studentPaymentId, result) => {
    try {
-      const singleStudentPayment =
-         await prismaInstance.studentPayment.findUnique({
+      const singleStudentPayment = await prismaInstance.studentPayment.findMany(
+         {
             where: {
-               idStudentPayment: JSON.parse(studentPaymentId),
+               studentId: JSON.parse(studentPaymentId),
             },
-         });
+            include: {
+               acceptedTypeDiscount: true,
+            },
+         }
+      );
 
-      if (singleStudentPayment) {
-         result(null, singleStudentPayment);
+      if (singleStudentPayment.length > 0) {
+         result(null, singleStudentPayment[0]);
       } else {
          result({
             error: "Not Found",
@@ -47,7 +52,17 @@ StudentPayment.findById = async (studentPaymentId, result) => {
 
 StudentPayment.getAll = async (result) => {
    try {
-      const studentPayments = await prismaInstance.studentPayment.findMany();
+      const studentPayments = await prismaInstance.studentPayment.findMany({
+         include: {
+            StudentFees: true,
+            acceptedTypeDiscount: true,
+            student: {
+               include: {
+                  section: true,
+               },
+            },
+         },
+      });
       result(null, studentPayments);
    } catch (err) {
       console.log(prismaErrorHandling(err));
