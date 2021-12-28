@@ -54,11 +54,31 @@ StudentPayment.getAll = async (result) => {
    try {
       const studentPayments = await prismaInstance.studentPayment.findMany({
          include: {
-            StudentFees: true,
+            StudentFees: {
+               include: {
+                  payType: true,
+                  studentPayment: {
+                     include: {
+                        student: true,
+                        acceptedTypeDiscount: true,
+                     },
+                  },
+               },
+            },
             acceptedTypeDiscount: true,
             student: {
                include: {
-                  section: true,
+                  studentLevel: {
+                     take: 1,
+                     orderBy: {
+                        idStudentLevel: "desc",
+                     },
+                  },
+                  section: {
+                     include: {
+                        SectionCost: true,
+                     },
+                  },
                },
             },
          },
