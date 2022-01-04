@@ -17,6 +17,8 @@ exports.create = (req, res) => {
       note: req.body.note,
       sectionId: req.body.sectionId * 1,
       archiveTypeId: req.body.archiveTypeId * 1,
+      incomeNumber: req.body.incomeNumber,
+      incomeDate: req.body.incomeDate,
    });
 
    Archive.create(archive, (err, data) => {

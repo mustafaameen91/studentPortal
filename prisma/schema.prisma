@@ -127,6 +127,7 @@ model YearStudy {
   AdministrativeOrder AdministrativeOrder[]
   StudentSchool       StudentSchool[]
   StudentGraduation   StudentGraduation[]
+  Archive             Archive[]
 }
 
 model StudentResponsible {
@@ -273,6 +274,8 @@ model Archive {
   archiveDate        DateTime
   archiveSubject     ArchiveSubject @relation(fields: [archiveSubjectId], references: [idArchiveSubject])
   archiveSubjectId   Int
+  incomeNumber       String         @default("لايوجد") @db.VarChar(220)
+  incomeDate         DateTime       @default("2021-11-27T16:44:47.824Z")
   archiveNumber      String         @db.VarChar(220)
   subjectDescription String         @db.VarChar(220)
   note               String         @db.VarChar(220)
@@ -281,6 +284,8 @@ model Archive {
   createdAt          DateTime       @default(now())
   archiveType        ArchiveType    @relation(fields: [archiveTypeId], references: [idArchiveType])
   archiveTypeId      Int            @default(1)
+  yearStudy          YearStudy      @relation(fields: [yearStudyId], references: [idYearStudy])
+  yearStudyId        Int            @default(1)
   ArchiveImage       ArchiveImage[]
 }
 

@@ -13,6 +13,8 @@ const Archive = function (archive) {
    this.note = archive.note;
    this.sectionId = archive.sectionId;
    this.archiveTypeId = archive.archiveTypeId;
+   this.incomeNumber = archive.incomeNumber;
+   this.incomeDate = archive.incomeDate;
 };
 
 Archive.create = async (newArchive, result) => {
