@@ -15,6 +15,7 @@ const Archive = function (archive) {
    this.archiveTypeId = archive.archiveTypeId;
    this.incomeNumber = archive.incomeNumber;
    this.incomeDate = archive.incomeDate;
+   this.yearStudyId = archive.yearStudyId;
 };
 
 Archive.create = async (newArchive, result) => {

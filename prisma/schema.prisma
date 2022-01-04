@@ -274,7 +274,7 @@ model Archive {
   archiveDate        DateTime
   archiveSubject     ArchiveSubject @relation(fields: [archiveSubjectId], references: [idArchiveSubject])
   archiveSubjectId   Int
-  incomeNumber       String         @default("لايوجد") @db.VarChar(220)
+  incomeNumber       String         @default("1") @db.VarChar(220)
   incomeDate         DateTime       @default("2021-11-27T16:44:47.824Z")
   archiveNumber      String         @db.VarChar(220)
   subjectDescription String         @db.VarChar(220)
@@ -311,9 +311,9 @@ model ArchiveImage {
 }
 
 model SectionCost {
-  idSectionCost Int     @id @default(autoincrement())
-  section       Section @relation(fields: [sectionId], references: [idSection])
-  sectionId     Int     @default(1)
+  idSectionCost Int      @id @default(autoincrement())
+  section       Section? @relation(fields: [sectionId], references: [idSection])
+  sectionId     Int?     @default(1)
   cost          Float
   attempts      Int
   level         Int
