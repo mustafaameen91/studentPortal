@@ -275,7 +275,7 @@ model Archive {
   archiveSubject     ArchiveSubject @relation(fields: [archiveSubjectId], references: [idArchiveSubject])
   archiveSubjectId   Int
   incomeNumber       String         @default("1") @db.VarChar(220)
-  incomeDate         DateTime       @default("2021-11-27T16:44:47.824Z")
+  incomeDate         DateTime       @default(now())
   archiveNumber      String         @db.VarChar(220)
   subjectDescription String         @db.VarChar(220)
   note               String         @db.VarChar(220)
