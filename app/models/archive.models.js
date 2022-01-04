@@ -86,6 +86,7 @@ Archive.getAll = async (result) => {
          include: {
             archiveSubject: true,
             archiveType: true,
+            yearStudy: true,
          },
       });
       result(null, archives);
