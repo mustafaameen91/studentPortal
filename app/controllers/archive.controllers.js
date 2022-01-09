@@ -56,6 +56,12 @@ exports.searchArchive = (req, res) => {
       search.sectionId = req.query.sectionId * 1;
    }
 
+   if (req.query.subjectDescription) {
+      search.subjectDescription = {
+         contains: req.query.subjectDescription,
+      };
+   }
+
    if (req.query.archiveTypeId) {
       search.archiveTypeId = req.query.archiveTypeId * 1;
    }
