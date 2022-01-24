@@ -56,7 +56,11 @@ Student.findById = async (studentId, result) => {
             },
             studentResponsables: true,
             studentGraduation: true,
-            studentImage: true,
+            studentImage: {
+               include: {
+                  imageType: true,
+               },
+            },
             studentStatus: true,
             administrativeOrders: true,
             acceptedType: true,
