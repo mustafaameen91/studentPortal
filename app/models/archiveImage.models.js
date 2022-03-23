@@ -21,6 +21,20 @@ ArchiveImage.create = async (newArchiveImage, result) => {
    }
 };
 
+ArchiveImage.createMany = async (newArchiveImages, result) => {
+   console.log(newArchiveImages);
+   try {
+      const archiveImages = await prismaInstance.archiveImage.createMany({
+         data: newArchiveImages,
+      });
+      console.log(archiveImages);
+      result(null, archiveImages);
+   } catch (err) {
+      console.log(prismaErrorHandling(err));
+      result(prismaErrorHandling(err), null);
+   }
+};
+
 ArchiveImage.findById = async (archiveImageId, result) => {
    try {
       const singleArchiveImage = await prismaInstance.archiveImage.findUnique({

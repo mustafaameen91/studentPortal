@@ -39,6 +39,7 @@ Archive.findBySearch = async (search, result) => {
          },
          include: {
             archiveSubject: true,
+            ArchiveImage: true,
          },
       });
 

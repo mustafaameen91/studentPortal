@@ -3,6 +3,8 @@ module.exports = (app) => {
 
    app.post("/api/addArchiveImage", archiveImage.create);
 
+   app.post("/api/addArchiveImages", archiveImage.createManyImages);
+
    app.get("/api/archiveImages", archiveImage.findAll);
 
    app.get("/api/archiveImage/:id", archiveImage.findOne);

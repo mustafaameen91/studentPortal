@@ -65,22 +65,43 @@ app.get("/api/studentImages/:file", function (request, response) {
    });
 });
 
-app.post("/uploadArchive", function (req, res) {
+app.post("/api/uploadArchive", function (req, res) {
    if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send("No files were uploaded.");
    }
 
-   let uploadedFile = req.files.attachment;
-   let photoName = generateRandomName(5, 3);
-   var filename = uploadedFile.name;
-   var ext = filename.substr(filename.lastIndexOf(".") + 1);
-   let imagePath = `${__dirname}/app/archive/${photoName}.${ext}`;
+   let uploadedFiles = [];
 
-   uploadedFile.mv(imagePath, function (err) {
-      if (err) return res.status(500).send(err);
-
-      res.send({ imagePath: `archive/${photoName}.${ext}` });
-   });
+   if (req.files.files.length > 1) {
+      req.files.files.forEach((file, index) => {
+         let uploadedFile = file;
+         let photoName = generateRandomName(5, index + 1);
+         var filename = uploadedFile.name;
+         var ext = filename.substr(filename.lastIndexOf(".") + 1);
+         let imagePath = `${__dirname}/app/archive/${photoName}.${ext}`;
+         uploadedFiles.push(
+            new Promise((resolve) => {
+               uploadedFile.mv(imagePath, function (err) {
+                  if (err) return res.status(500).send(err);
+                  resolve({ imagePath: `archive/${photoName}.${ext}` });
+               });
+            })
+         );
+      });
+      Promise.all(uploadedFiles).then((images) => {
+         res.send({ images: images });
+      });
+   } else {
+      let uploadedFile = req.files.files;
+      let photoName = generateRandomName(5, 20);
+      var filename = uploadedFile.name;
+      var ext = filename.substr(filename.lastIndexOf(".") + 1);
+      let imagePath = `${__dirname}/app/archive/${photoName}.${ext}`;
+      uploadedFile.mv(imagePath, function (err) {
+         if (err) return res.status(500).send(err);
+         res.send({ imagePath: `archive/${photoName}.${ext}` });
+      });
+   }
 });
 
 app.get("/api/archive/:file", function (request, response) {
