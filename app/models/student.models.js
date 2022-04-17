@@ -312,6 +312,176 @@ Student.updateById = async (studentId, student, studentInfo, result) => {
 
 Student.remove = async (id, result) => {
    try {
+      let studentLevel = await prismaInstance.studentLevel.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentLevel.length > 0) {
+         let deleteStudentLevel = await prismaInstance.studentLevel.deleteMany({
+            where: {
+               studentId: JSON.parse(id),
+            },
+         });
+
+         console.log(deleteStudentLevel);
+      }
+
+      let studentResponsible = await prismaInstance.studentResponsible.findMany(
+         {
+            where: {
+               studentId: JSON.parse(id),
+            },
+         }
+      );
+
+      if (studentResponsible.length > 0) {
+         let deleteStudentResponsible =
+            await prismaInstance.studentResponsible.deleteMany({
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            });
+
+         console.log(deleteStudentResponsible);
+      }
+
+      let studentGraduation = await prismaInstance.studentGraduation.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentGraduation.length > 0) {
+         let deleteStudentGraduation =
+            await prismaInstance.studentGraduation.deleteMany({
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            });
+
+         console.log(deleteStudentGraduation);
+      }
+
+      let studentImages = await prismaInstance.studentImage.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentImages.length > 0) {
+         let deleteStudentImages = await prismaInstance.studentImage.deleteMany(
+            {
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            }
+         );
+
+         console.log(deleteStudentImages);
+      }
+
+      let studentAddress = await prismaInstance.address.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentAddress.length > 0) {
+         let deleteStudentAddress = await prismaInstance.address.deleteMany({
+            where: {
+               studentId: JSON.parse(id),
+            },
+         });
+
+         console.log(deleteStudentAddress);
+      }
+
+      let studentSchool = await prismaInstance.studentSchool.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentSchool.length > 0) {
+         let deleteStudentSchool = await prismaInstance.studentSchool.delete({
+            where: {
+               studentId: JSON.parse(id),
+            },
+         });
+
+         console.log(deleteStudentSchool);
+      }
+
+      let studentNational = await prismaInstance.nationalInfo.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentNational.length > 0) {
+         let deleteStudentNational = await prismaInstance.nationalInfo.delete({
+            where: {
+               studentId: JSON.parse(id),
+            },
+         });
+
+         console.log(deleteStudentNational);
+      }
+
+      let studentNationalCertificate =
+         await prismaInstance.nationalityCertificate.findMany({
+            where: {
+               studentId: JSON.parse(id),
+            },
+         });
+
+      if (studentNationalCertificate.length > 0) {
+         let deleteStudentNationalCertificate =
+            await prismaInstance.nationalityCertificate.deleteMany({
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            });
+
+         console.log(deleteStudentNationalCertificate);
+      }
+
+      let studentExitCauses = await prismaInstance.exitCauses.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentExitCauses.length > 0) {
+         let deleteStudentExitCauses =
+            await prismaInstance.exitCauses.deleteMany({
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            });
+
+         console.log(deleteStudentExitCauses);
+      }
+
+      let studentAdmins = await prismaInstance.administrativeOrder.findMany({
+         where: {
+            studentId: JSON.parse(id),
+         },
+      });
+
+      if (studentAdmins.length > 0) {
+         let deleteStudentAdmins =
+            await prismaInstance.administrativeOrder.deleteMany({
+               where: {
+                  studentId: JSON.parse(id),
+               },
+            });
+
+         console.log(deleteStudentAdmins);
+      }
+
       const deleteStudent = await prismaInstance.student.delete({
          where: { idStudent: JSON.parse(id) },
       });
