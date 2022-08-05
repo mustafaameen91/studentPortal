@@ -27,4 +27,6 @@ module.exports = (app) => {
       "/api/allAdministrativeOrders",
       administrativeOrder.deleteAllByOrderNumber
    );
+
+   app.get("/api/administrativeOrdersCount",administrativeOrder.administrativeOrdersCount)
 };

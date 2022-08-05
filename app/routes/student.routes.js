@@ -20,4 +20,8 @@ module.exports = (app) => {
    app.delete("/api/student/:id", student.delete);
 
    app.delete("/api/students", student.deleteAll);
+
+   app.get(
+      "/api/allCount",student.findStudentsCount
+    );
 };

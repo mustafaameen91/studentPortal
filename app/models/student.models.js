@@ -98,6 +98,7 @@ Student.getBySearch = async (conditions, result) => {
    let studentLevel = {};
    let subCategoryId;
    let studentGraduationId;
+   //let studentCategory;
 
    if (conditions.studentLevel) {
       console.log(conditions.studentLevel);
@@ -105,7 +106,7 @@ Student.getBySearch = async (conditions, result) => {
       delete conditions.studentLevel;
    }
    if (conditions.subCategoryId) {
-      console.log(conditions.subCategoryId);
+      console.log("studentSubCategory : ",conditions.subCategoryId);
       subCategoryId = conditions.subCategoryId;
       delete conditions.subCategoryId;
    }
@@ -117,6 +118,7 @@ Student.getBySearch = async (conditions, result) => {
       delete conditions.studentGraduation;
    }
    delete conditions.studentGraduation;
+
    try {
       const students = await prismaInstance.student.findMany({
          where: {

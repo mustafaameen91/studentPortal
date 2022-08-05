@@ -14,4 +14,5 @@ module.exports = (app) => {
    app.delete("/api/exitCauses/:id", exitCauses.delete);
 
    app.delete("/api/allExitCauses", exitCauses.deleteAll);
+   app.post("/api/updateOrCreateExitCauses",exitCauses.updateOrCreateExitCauses)
 };

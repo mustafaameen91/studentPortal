@@ -30,18 +30,18 @@ StudentSchool.create = async (newStudentSchool, result) => {
    let data = {
       schoolName: newStudentSchool.schoolName,
       graduationDate: newStudentSchool.graduationDate,
-      totalMarks: newStudentSchool.totalMarks * 1,
-      average: newStudentSchool.average * 1,
-      documentNumber: newStudentSchool.documentNumber * 1,
-      lessonCount: newStudentSchool.lessonCount * 1,
+      totalMarks: newStudentSchool.totalMarks ,
+      average: newStudentSchool.average ,
+      documentNumber: newStudentSchool.documentNumber ,
+      lessonCount: newStudentSchool.lessonCount ,
       directorate: newStudentSchool.directorate,
       documentDate: newStudentSchool.documentDate,
-      studySubCategoryId: newStudentSchool.studySubCategoryId * 1,
-      studentId: newStudentSchool.studentId * 1,
-      passTypeId: newStudentSchool.passTypeId * 1,
-      documentDigit: newStudentSchool.documentDigit * 1,
+      studySubCategoryId: newStudentSchool.studySubCategoryId,
+      studentId: newStudentSchool.studentId ,
+      passTypeId: newStudentSchool.passTypeId ,
+      documentDigit: newStudentSchool.documentDigit ,
       examNumber: newStudentSchool.examNumber,
-      certificateStatusId: newStudentSchool.certificateStatusId * 1,
+      certificateStatusId: newStudentSchool.certificateStatusId ,
       certificateStatusDescription:
          newStudentSchool.certificateStatusDescription,
       correctNumberAnswer: newStudentSchool.correctNumberAnswer,
@@ -49,18 +49,16 @@ StudentSchool.create = async (newStudentSchool, result) => {
       correctNumber: newStudentSchool.correctNumber,
       correctDate: newStudentSchool.correctDate,
    };
-
    try {
       const studentSchool = await prismaInstance.studentSchool.upsert({
          where: {
             idStudentSchool: newStudentSchool.idStudentSchool
-               ? parseInt(newStudentSchool.idStudentSchool)
+               ? newStudentSchool.idStudentSchool
                : -1,
          },
          create: data,
          update: data,
       });
-
       result(null, studentSchool);
    } catch (err) {
       console.log(prismaErrorHandling(err));
