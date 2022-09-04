@@ -1,7 +1,7 @@
 /node_modules/
-.env
-.gitignore
-package-lock.json
-prisma/migrations/
-/app/archive
-/app/studentImages
+# .env
+# .gitignore
+# package-lock.json
+# prisma/migrations/
+# /app/archive
+# /app/studentImages

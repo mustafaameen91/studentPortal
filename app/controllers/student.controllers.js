@@ -26,7 +26,6 @@ exports.createByFile = (req, res) => {
 
 exports.findBySearch = (req, res) => {
   let filtered = {};
-
   if (req.query.studentName) {
     filtered.studentName = {
       startsWith: req.query.studentName,
@@ -76,12 +75,12 @@ exports.findBySearch = (req, res) => {
   /* if (req.query.studentCategory) {
     filtered.studentCategory = req.query.studentCategory;
   } */
-
-  console.log(" filtered : ", filtered);
-
+  console.log("filtered : ",filtered)
   Student.getBySearch(filtered, (err, data) => {
     if (err) res.status(err.code).send(err);
-    else res.send(data);
+    else {
+      res.send(data)
+    };/* end of if */
   });
 };
 exports.findStudentsCount = (req, res) => {
